@@ -3,8 +3,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 def index(request: HttpRequest) -> HttpResponse:
-    print('some')
-    return HttpResponse('App page')
+    return render(request=request, template_name='app_games/index.html')
 
 
 def categories(request: HttpRequest, cat_id: int = 0) -> HttpResponse:
