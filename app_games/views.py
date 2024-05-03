@@ -18,3 +18,15 @@ def catalog(request: HttpRequest) -> HttpResponse:
         template_name='app_games/catalog.html',
         context=context
     )
+
+
+def game(requst: HttpRequest, author: str, game_title: str) -> HttpResponse:
+    context = {
+        'title': game_title
+    }
+
+    return render(
+        request=requst,
+        template_name='app_games/details.html',
+        context=context
+    )

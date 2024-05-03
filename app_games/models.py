@@ -1,5 +1,8 @@
 from django.db import models
 
+# Project
+from app_users.models import UserModel
+
 
 def image_directory_path(instance, filename):
     return f'covers/{instance.title} {filename}'
@@ -7,7 +10,7 @@ def image_directory_path(instance, filename):
 
 # Create your models here.
 class GameModel(models.Model):
-    author = models.CharField(max_length=50, unique=True, verbose_name='Автор')
+    author = models.ForeignKey(to=UserModel, on_delete=models.SET_NULL, verbose_name='Автор')
     image = models.ImageField(upload_to=image_directory_path, verbose_name='Обложка')
     title = models.CharField(max_length=100, verbose_name='Название')
     slug = models.SlugField(max_length=200, verbose_name='URL')

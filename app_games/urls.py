@@ -22,5 +22,6 @@ from app_games import views
 app_name = 'games'
 
 urlpatterns = [
-    path(route='', view=views.catalog, name='catalog'),
+    path(route='games/', view=views.catalog, name='catalog'),
+    path(route='game/<author:str>/<title:slug>')
 ]
