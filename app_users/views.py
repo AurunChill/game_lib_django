@@ -1,7 +1,8 @@
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login
+import django.contrib.auth as auth
+from django.contrib.auth.decorators import login_required
 
 # Project
 from app_users.forms import UserLoginForm, UserRegistrationForm
@@ -13,8 +14,8 @@ def login(request: HttpRequest) -> HttpResponse:
         form = UserLoginForm(data=data)
         if form.is_valid():
             user = form.get_user()
-            auth_login(request, user)
-            return redirect(reverse('games:catalog'))  # Redirect user to home page or another appropriate page
+            auth.login(request, user)
+            return redirect(user.get_absolute_url())  # Redirect user to home page or another appropriate page
     else:
         form = UserLoginForm()
 
@@ -48,5 +49,25 @@ def registration(request: HttpRequest) -> HttpResponse:
     return render(
         request=request,
         template_name='app_users/auth_registration.html',
+        context=context
+    )
+
+
+@login_required
+def logout(request: HttpRequest) -> HttpResponse:
+    auth.logout(request=request)
+
+    return redirect(reverse('users:login'))
+
+
+@login_required()
+def user_profile(request: HttpRequest, username: str) -> HttpResponse:
+    context = {
+        'title': username
+    }
+
+    return render(
+        request=request,
+        template_name='app_users/profile.html',
         context=context
     )

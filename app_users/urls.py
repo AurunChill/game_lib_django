@@ -24,4 +24,6 @@ app_name = 'users'
 urlpatterns = [
     path(route='login/', view=views.login, name='login'),
     path(route='registration/', view=views.registration, name='registration'),
+    path(route='logout/', view=views.logout, name='logout'),
+    path(route='user/<str:username>', view=views.user_profile, name='profile')
 ]
