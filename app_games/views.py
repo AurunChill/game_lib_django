@@ -1,16 +1,25 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.core.paginator import Paginator
 
 # Project
 from app_games.models import GameModel
 
 
 def catalog(request: HttpRequest) -> HttpResponse:
+    data = request.GET
+    page = data.get('page', 1)
+
     games = GameModel.objects.all()
+
+    paginator = Paginator(object_list=games, per_page=6)
+    current_page = int(page)
+    current_page_games = paginator.page(current_page)
     
     context = {
         'title': 'Каталог',
-        'game_list': games
+        'game_list': current_page_games,
+        'current_page': current_page
     }
 
     return render(
