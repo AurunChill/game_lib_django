@@ -1,9 +1,14 @@
 from django.db import models
 
+
+def cover_directory_path(instance, filename):
+    return 'covers/{0}/{1}'.format(instance.id, filename)
+
+
 # Create your models here.
 class GameModel(models.Model):
     author = models.CharField(max_length=50, unique=True, verbose_name='Автор')
-    image = models.ImageField(upload_to='covers/{self.pk}/', verbose_name='Обложка')
+    image = models.ImageField(upload_to=cover_directory_path, verbose_name='Обложка')
     title = models.CharField(max_length=100, verbose_name='Название')
     slug = models.SlugField(max_length=200, verbose_name='URL')
     description = models.TextField(default='Coming Soon', verbose_name='Описание')
@@ -11,9 +16,12 @@ class GameModel(models.Model):
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
     discount = models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %')
 
+    def get_image_folder(self):
+        return f'covers/{self.pk}'
+
     class Meta:
         db_table = 'games'
-        verbose_name = 'Игра'
+        verbose_name = 'Игру'
         verbose_name_plural = 'Игры'
         ordering = ('title',)
 

@@ -11,4 +11,12 @@
     .nav_choosen {
         @apply text-orange-600 font-bold pointer-events-none text-lg
     }
+
+    .card {
+        @apply transition-transform duration-300 ease-in-out hover:scale-105
+    }
+
+    .card_link {
+        @apply transition-colors duration-300 ease-in-out hover:text-orange-500
+    }
 }
