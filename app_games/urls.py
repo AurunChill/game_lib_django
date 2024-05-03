@@ -23,5 +23,5 @@ app_name = 'games'
 
 urlpatterns = [
     path(route='games/', view=views.catalog, name='catalog'),
-    path(route='game/<author:str>/<title:slug>')
+    path(route='game/<str:author>/<slug:game_slug>', view=views.game, name='game_detail')
 ]

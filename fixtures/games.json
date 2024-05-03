@@ -3,36 +3,36 @@
         "model": "app_games.gamemodel",
         "pk": 1,
         "fields": {
-            "author": "tayoDEV",
-            "image": "covers/Eyeless_Jack_xT7VrR.png",
+            "author": 3,
+            "image": "covers/Eyeless_Jack_xT7VrR_hTUdEsR.png",
             "title": "Eyeless Jack",
             "slug": "eyeless-jack",
             "description": "Eyeless Jack Horror Game",
             "release_date": "2024-05-03",
             "price": "150.00",
-            "discount": "12.00"
+            "discount": "0.00"
         }
     },
     {
         "model": "app_games.gamemodel",
         "pk": 2,
         "fields": {
-            "author": "Dead Possum Games",
-            "image": "covers/Laundry_Night_6G9Lg8.png",
+            "author": 4,
+            "image": "covers/Laundry_Night_6G9Lg8_vuNczux.png",
             "title": "Laundry Night",
             "slug": "laundry-night",
             "description": "Spend a creepy night in a haunted laundromat",
             "release_date": "2024-05-03",
-            "price": "15.00",
-            "discount": "0.00"
+            "price": "300.00",
+            "discount": "15.00"
         }
     },
     {
         "model": "app_games.gamemodel",
         "pk": 3,
         "fields": {
-            "author": "Capybaraforge",
-            "image": "covers/Ring_Academy_AJOPvB.png",
+            "author": 5,
+            "image": "covers/Ring_Academy_AJOPvB_O7z8dTv.png",
             "title": "Ring Academy",
             "slug": "ring-academy",
             "description": "She killed your dog.",
@@ -45,8 +45,8 @@
         "model": "app_games.gamemodel",
         "pk": 4,
         "fields": {
-            "author": "Niven Hedinger",
-            "image": "covers/Gimmick_NkzHwc.png",
+            "author": 6,
+            "image": "covers/Gimmick_NkzHwc_usmftic.png",
             "title": "Gimmick",
             "slug": "gimmick",
             "description": "Transfer data on floppy disks in a spooky lab",
@@ -59,10 +59,10 @@
         "model": "app_games.gamemodel",
         "pk": 5,
         "fields": {
-            "author": "L3x",
-            "image": "covers/Jollibae_2024_7zln6_.png",
-            "title": "Jollibae (2024)",
-            "slug": "jollibae-2024",
+            "author": 7,
+            "image": "covers/L3x_7zln6_.png",
+            "title": "L3x",
+            "slug": "l3x",
             "description": "RUN! RUN! RUN",
             "release_date": "2024-05-02",
             "price": "70.00",
@@ -73,8 +73,22 @@
         "model": "app_games.gamemodel",
         "pk": 6,
         "fields": {
-            "author": "KenForest",
-            "image": "covers/Call_To_Summon_zp5LzS.png",
+            "author": 8,
+            "image": "covers/Call_To_Summon_zp5LzS_nFqWnBb.png",
+            "title": "Call To Summon",
+            "slug": "call-to-summon",
+            "description": "A game about a phone that can summon.",
+            "release_date": "2024-05-02",
+            "price": "27.00",
+            "discount": "0.00"
+        }
+    },
+    {
+        "model": "app_games.gamemodel",
+        "pk": 7,
+        "fields": {
+            "author": 8,
+            "image": "covers/Call_To_Summon_zp5LzS_WeM5tyR.png",
             "title": "Call To Summon",
             "slug": "call-to-summon",
             "description": "A game about a phone that can summon.",
@@ -85,10 +99,10 @@
     },
     {
         "model": "app_games.gamemodel",
-        "pk": 7,
+        "pk": 8,
         "fields": {
-            "author": "ninjamuffin99",
-            "image": "covers/Friday_Night_Funkin_asdf.png",
+            "author": 9,
+            "image": "covers/Friday_Night_Funkin_asdf_P2Ihydh.png",
             "title": "Friday Night Funkin'",
             "slug": "friday-night-funkin",
             "description": "The coolest rhythm game",
@@ -99,70 +113,70 @@
     },
     {
         "model": "app_games.gamemodel",
-        "pk": 8,
+        "pk": 9,
         "fields": {
-            "author": "Spicaze",
-            "image": "covers/Silver_Thread__Deux_bz_xl8.png",
+            "author": 10,
+            "image": "covers/Silver_Thread__Deux_bz_xl8_IomJOKP.png",
             "title": "Silver Thread : Deux",
             "slug": "silver-thread-deux",
             "description": "An exorcist that doubts the existence of ghost.",
-            "release_date": "2024-05-17",
+            "release_date": "2024-04-17",
             "price": "500.00",
             "discount": "15.00"
         }
     },
     {
         "model": "app_games.gamemodel",
-        "pk": 9,
+        "pk": 10,
         "fields": {
-            "author": "Mike Klubnika",
-            "image": "covers/Buckshot_Roulette_sVIn2e.png",
+            "author": 2,
+            "image": "covers/Buckshot_Roulette_sVIn2e_n8L2aS2.png",
             "title": "Buckshot Roulette",
             "slug": "buckshot-roulette",
-            "description": "Risk your life.",
-            "release_date": "2024-04-30",
+            "description": "Risk your life",
+            "release_date": "2024-05-03",
             "price": "600.00",
             "discount": "0.00"
         }
     },
     {
         "model": "app_games.gamemodel",
-        "pk": 10,
+        "pk": 11,
         "fields": {
-            "author": "mrdrnose",
-            "image": "covers/Voices_Of_The_Void_Pre-Alpha_Urzxsd.png",
-            "title": "Voices Of The Void Pre-Alpha",
-            "slug": "voices-of-the-void-pre-alpha",
+            "author": 11,
+            "image": "covers/Voices_Of_The_Void_Urzxsd.png",
+            "title": "Voices Of The Void",
+            "slug": "voices-of-the-void",
             "description": "Gather unknown signals from deep space",
-            "release_date": "2024-05-03",
+            "release_date": "2024-05-07",
             "price": "120.00",
             "discount": "99.00"
         }
     },
     {
         "model": "app_games.gamemodel",
-        "pk": 11,
+        "pk": 12,
         "fields": {
-            "author": "Nacho Sama",
-            "image": "covers/Thats_not_my_Neighbor_KHxNew.png",
+            "author": 12,
+            "image": "covers/Thats_not_my_Neighbor_KHxNew_4zjleJd.png",
             "title": "That's not my Neighbor",
             "slug": "thats-not-my-neighbor",
             "description": "Work as a doorman in a building",
-            "release_date": "2024-05-03",
+            "release_date": "2024-05-05",
             "price": "400.00",
-            "discount": "0.00"
+            "discount": "45.00"
         }
     },
     {
         "model": "app_games.gamemodel",
-        "pk": 12,
+        "pk": 13,
         "fields": {
-            "author": "orange~",
-            "image": "covers/Fear__Hunger_Termina_fgiu8.png",
+            "author": 13,
+            "image": "covers/Fear__Hunger_Termina_fgiu8_ITTZSB2.png",
             "title": "Fear & Hunger: Termina",
             "slug": "fear-hunger-termina",
             "description": "A survival-horror jRPG follow-up to Fear & Hunger",
-            "release_date": "2024-05-26",
+            "release_date": "2024-05-09",
             "price": "3000.00",
             "discount": "5.00"
         }

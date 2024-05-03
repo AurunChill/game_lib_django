@@ -1,0 +1,249 @@
+[
+    {
+        "model": "app_users.usermodel",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$RkTwCz0XdefppqW9FPTO2S$9cQ/Uu1BWyKSUVKxM6et9zy/b8GcWz8SJ4uGWmOH6Hc=",
+            "last_login": "2024-05-03T17:34:15.496Z",
+            "is_superuser": true,
+            "username": "aurun",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:34:10.465Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 2,
+        "fields": {
+            "password": "_123456789Aa",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "MikeKlubnika",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:35:26Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 3,
+        "fields": {
+            "password": "1234",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "tayoDEV",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:36:58Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 4,
+        "fields": {
+            "password": "12344",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "DeadPossumGames",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:37:04Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 5,
+        "fields": {
+            "password": "Capybaraforge",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "Capybaraforge",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:37:20Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 6,
+        "fields": {
+            "password": "Niven Hedinger",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "NivenHedinger",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:37:32Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 7,
+        "fields": {
+            "password": "L3x",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "L3x",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:37:46Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 8,
+        "fields": {
+            "password": "KenForest",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "KenForest",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:37:51Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 9,
+        "fields": {
+            "password": "ninjamuffin99",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "ninjamuffin99",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:37:57Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 10,
+        "fields": {
+            "password": "Spicaze",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "Spicaze",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:38:02Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 11,
+        "fields": {
+            "password": "mrdrnose",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "mrdrnose",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:38:09Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 12,
+        "fields": {
+            "password": "Nacho Sama",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "NachoSama",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:38:20Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "app_users.usermodel",
+        "pk": 13,
+        "fields": {
+            "password": "orange",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "orange",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-05-03T17:38:41Z",
+            "image": "",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

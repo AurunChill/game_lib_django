@@ -5,12 +5,12 @@
 <div class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16">
     <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
 
-        {% for game in games %}
+        {% for game in game_list %}
         <div class="card bg-white shadow-md rounded-xl flex flex-col justify-between leading-normal mt-4">
             <img src="{{ game.image.url }}" class="w-full mb-3 rounded-t-xl">
             <div class="">
                 <div class="px-4 mb-4">
-                    <a href="{% url '${some-url-name}' arg %}" class="card_link text-gray-900 font-bold text-lg mb-2 inline-block">{{ game.title }}</a>
+                    <a href="{{ game.get_absolute_url }}" class="card_link text-gray-900 font-bold text-lg mb-2 inline-block">{{ game.title }}</a>
                     <p class="text-gray-700 text-sm">{{ game.description|truncatechars:30 }}</p>
                     <p class="text-sm text-gray-500 mt-2">{{ game.author }}</p>
                 </div>

@@ -2,15 +2,15 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 # Project
-from app_games import models
+from app_games.models import GameModel
 
 
 def catalog(request: HttpRequest) -> HttpResponse:
-    games = models.GameModel.objects.all()
+    games = GameModel.objects.all()
     
     context = {
         'title': 'Каталог',
-        'games': games
+        'game_list': games
     }
 
     return render(
@@ -20,9 +20,12 @@ def catalog(request: HttpRequest) -> HttpResponse:
     )
 
 
-def game(requst: HttpRequest, author: str, game_title: str) -> HttpResponse:
+def game(requst: HttpRequest, author: str, game_slug: str) -> HttpResponse:
+    game = GameModel.objects.filter(author__username=author).filter(slug=game_slug).first()
+
     context = {
-        'title': game_title
+        'title': game.title,
+        'game': game
     }
 
     return render(
