@@ -14,19 +14,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, register_converter
+from django.urls import path
 
 # Project
 from app_games import views
-from app_games import converters
-
-register_converter(converter=converters.FourDigitYearConverter, type_name='year')
 
 app_name = 'games'
 
 urlpatterns = [
-    path(route='cats/<int:cat_id>/', view=views.categories, name='cats_id'),
-    path(route='cats/<slug:cat_slug>/', view=views.categories_by_slug, name='cats_slug'),
-    path(route='archive/<year:year>/', view=views.archive, name='archive')
-    # re_path(route=r'^archive/(?P<year>[0-9]{4})/', view=views.archive)
+    path(route='', view=views.catalog, name='catalog'),
 ]

@@ -22,6 +22,3 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('games/', include('app_games.urls')),
 ]
-
-# from app_games import views
-# handler404 = views.page_not_found

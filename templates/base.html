@@ -25,7 +25,7 @@
                 <div class="hidden w-3/5 items-center justify-evenly font-semibold md:flex">
                     <a class="{% if request.resolver_match.url_name == 'home' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:home' %}">Домашняя</a>
                     <a class="{% if request.resolver_match.url_name == 'about' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:about' %}">О нас</a>
-                    <a class="header_link" href="">Игры</a> <!-- Assuming you will update this with relevant url name and logic similar to above when you have the URL -->
+                    <a class="{% if request.resolver_match.url_name == 'catalog' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'games:catalog' %}">Игры</a>
                     <a class="{% if request.resolver_match.url_name == 'contacts' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:contacts' %}">Контакты</a>
                 </div>
                 <div class="hidden w-1/5 items-center justify-evenly font-semibold
