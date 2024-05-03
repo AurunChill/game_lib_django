@@ -1,0 +1,75 @@
+{% load static %}
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <title>{{ title }}</title>
+</head>
+
+<body class="bg-white ">
+    <!-- component -->
+    <header>
+        <nav x-data="{ open: false }" class="flex h-auto w-auto bg-gray-200 shadow-lg justify-between md:h-16">
+            <div class="flex w-full justify-stre">
+                <div :class="open ? 'hidden':'flex'" class="flex px-6 w-1/2 items-center font-semibold
+            md:w-1/5 md:px-1 md:flex md:items-center md:justify-center"
+                    x-transition:enter="transition ease-out duration-300">
+                    <a href="" class="p-5 bg-orange-600 rounded-sm ms-[-100px] text-white">Игротека GameLib</a>
+                </div>
+
+                <div x-show="open" x-transition:enter="transition ease-in-out duration-300" class="flex flex-col w-full h-auto
+            md:hidden">
+                </div>
+                <div class="hidden w-3/5 items-center justify-evenly font-semibold md:flex">
+                    <a class="{% if request.resolver_match.url_name == 'home' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:home' %}">Домашняя</a>
+                    <a class="{% if request.resolver_match.url_name == 'about' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:about' %}">О нас</a>
+                    <a class="header_link" href="">Игры</a> <!-- Assuming you will update this with relevant url name and logic similar to above when you have the URL -->
+                    <a class="{% if request.resolver_match.url_name == 'contacts' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:contacts' %}">Контакты</a>
+                </div>
+                <div class="hidden w-1/5 items-center justify-evenly font-semibold
+            md:flex">
+                    <button class='header_link'>Войти</button>
+                    <span>|</span>
+                    <button class="header_link">Регистрация</button>
+                </div>
+                <button class="text-gray-500 w-10 h-10 relative focus:outline-none bg-white
+                            md:hidden
+                          " @click="open = !open">
+                    <span class="sr-only">Open main menu</span>
+                    <div class="block w-5 absolute left-1/2 top-1/2   transform  -translate-x-1/2 -translate-y-1/2">
+                        <span aria-hidden="true"
+                            class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
+                            :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+                        <span aria-hidden="true"
+                            class="block absolute  h-0.5 w-5 bg-current   transform transition duration-500 ease-in-out"
+                            :class="{'opacity-0': open } "></span>
+                        <span aria-hidden="true"
+                            class="block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out"
+                            :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+                    </div>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+        {% block content %}
+
+        {% endblock content %}
+    </main>
+
+    <footer class="bg-white dark:bg-gray-500 sticky top-[100vh]">
+        <div class="container p-4 mx-auto">
+            <div class="items-center sm:flex-row sm:justify-between">
+                <p class="text-center text-sm text-gray-200">© SyanOSee™ Copyright 2024. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+</body>
+
+</html>

@@ -18,9 +18,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('', include('app_main.urls')),
     path('admin/', admin.site.urls),
-    path('', include('app_games.urls')),
+    path('games/', include('app_games.urls')),
 ]
 
-from app_games import views
-handler404 = views.page_not_found
+# from app_games import views
+# handler404 = views.page_not_found
