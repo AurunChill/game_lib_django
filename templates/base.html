@@ -8,7 +8,7 @@
     <title>{{ title }}</title>
 </head>
 
-<body class="bg-white ">
+<body class="bg-white "> 
     <!-- component -->
     <header class="">
         <nav x-data="{ open: false }" class="flex h-auto w-auto bg-gray-200 shadow-lg justify-between md:h-16">
@@ -30,9 +30,9 @@
                 </div>
                 <div class="hidden w-1/5 items-center justify-evenly font-semibold
             md:flex">
-                    <button class='header_link'>Войти</button>
+                    <button class=''><a class="header_link {% if request.resolver_match.url_name == 'login' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'users:login' %}">Войти</a></button>
                     <span>|</span>
-                    <button class="header_link">Регистрация</button>
+                    <button class=''><a class="header_link {% if request.resolver_match.url_name == 'registration' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'users:registration' %}">Регистрация</a></button>
                 </div>
                 <button class="text-gray-500 w-10 h-10 relative focus:outline-none bg-white
                             md:hidden

@@ -4,7 +4,7 @@
         "pk": 1,
         "fields": {
             "author": "tayoDEV",
-            "image": "covers/1/xT7VrR.png",
+            "image": "covers/Eyeless_Jack_xT7VrR.png",
             "title": "Eyeless Jack",
             "slug": "eyeless-jack",
             "description": "Eyeless Jack Horror Game",
@@ -18,7 +18,7 @@
         "pk": 2,
         "fields": {
             "author": "Dead Possum Games",
-            "image": "covers/2/6G9Lg8.png",
+            "image": "covers/Laundry_Night_6G9Lg8.png",
             "title": "Laundry Night",
             "slug": "laundry-night",
             "description": "Spend a creepy night in a haunted laundromat",
@@ -32,7 +32,7 @@
         "pk": 3,
         "fields": {
             "author": "Capybaraforge",
-            "image": "covers/None/AJOPvB.png",
+            "image": "covers/Ring_Academy_AJOPvB.png",
             "title": "Ring Academy",
             "slug": "ring-academy",
             "description": "She killed your dog.",
@@ -46,7 +46,7 @@
         "pk": 4,
         "fields": {
             "author": "Niven Hedinger",
-            "image": "covers/None/NkzHwc.png",
+            "image": "covers/Gimmick_NkzHwc.png",
             "title": "Gimmick",
             "slug": "gimmick",
             "description": "Transfer data on floppy disks in a spooky lab",
@@ -60,7 +60,7 @@
         "pk": 5,
         "fields": {
             "author": "L3x",
-            "image": "covers/None/7zln6_.png",
+            "image": "covers/Jollibae_2024_7zln6_.png",
             "title": "Jollibae (2024)",
             "slug": "jollibae-2024",
             "description": "RUN! RUN! RUN",
@@ -74,7 +74,7 @@
         "pk": 6,
         "fields": {
             "author": "KenForest",
-            "image": "covers/None/zp5LzS.png",
+            "image": "covers/Call_To_Summon_zp5LzS.png",
             "title": "Call To Summon",
             "slug": "call-to-summon",
             "description": "A game about a phone that can summon.",
@@ -88,7 +88,7 @@
         "pk": 7,
         "fields": {
             "author": "ninjamuffin99",
-            "image": "covers/None/asdf.png",
+            "image": "covers/Friday_Night_Funkin_asdf.png",
             "title": "Friday Night Funkin'",
             "slug": "friday-night-funkin",
             "description": "The coolest rhythm game",
@@ -102,7 +102,7 @@
         "pk": 8,
         "fields": {
             "author": "Spicaze",
-            "image": "covers/None/bz_xl8.png",
+            "image": "covers/Silver_Thread__Deux_bz_xl8.png",
             "title": "Silver Thread : Deux",
             "slug": "silver-thread-deux",
             "description": "An exorcist that doubts the existence of ghost.",
@@ -116,7 +116,7 @@
         "pk": 9,
         "fields": {
             "author": "Mike Klubnika",
-            "image": "covers/None/sVIn2e.png",
+            "image": "covers/Buckshot_Roulette_sVIn2e.png",
             "title": "Buckshot Roulette",
             "slug": "buckshot-roulette",
             "description": "Risk your life.",
@@ -130,7 +130,7 @@
         "pk": 10,
         "fields": {
             "author": "mrdrnose",
-            "image": "covers/None/Urzxsd.png",
+            "image": "covers/Voices_Of_The_Void_Pre-Alpha_Urzxsd.png",
             "title": "Voices Of The Void Pre-Alpha",
             "slug": "voices-of-the-void-pre-alpha",
             "description": "Gather unknown signals from deep space",
@@ -144,7 +144,7 @@
         "pk": 11,
         "fields": {
             "author": "Nacho Sama",
-            "image": "covers/None/KHxNew.png",
+            "image": "covers/Thats_not_my_Neighbor_KHxNew.png",
             "title": "That's not my Neighbor",
             "slug": "thats-not-my-neighbor",
             "description": "Work as a doorman in a building",
@@ -158,7 +158,7 @@
         "pk": 12,
         "fields": {
             "author": "orange~",
-            "image": "covers/None/fgiu8.png",
+            "image": "covers/Fear__Hunger_Termina_fgiu8.png",
             "title": "Fear & Hunger: Termina",
             "slug": "fear-hunger-termina",
             "description": "A survival-horror jRPG follow-up to Fear & Hunger",
