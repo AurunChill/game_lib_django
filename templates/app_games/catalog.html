@@ -1,8 +1,29 @@
 {% extends "base.html" %}
 {% load static %}
+{% load user_tags %}
 
 {% block content %}
-<div class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-14">
+    <!-- Search -->
+    <form class="flex flex-col md:flex-row gap-3 ms-4 mt-4" method="GET">
+        <div class="flex">
+            <input id='search' name='search' type="text" placeholder="Поиск игры/автора"
+                class="md:w-80 px-3 h-10 border-t border-b border-l rounded-sm focus:outline-none focus:border-orange-500"
+                >
+            <button type="submit" class="bg-orange-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Поиск</button>
+        </div>
+        {% with request.GET.pricing_type as filter %}
+        <select id="pricing_type" name="pricing_type"
+            class=" h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+            <option class="text-black" value="All" {% if not filter %}selected{% endif %}>Все</option>
+            <option class="text-black" value="Discount" {% if filter == 'Discount' %}selected{% endif %}>Со скидкой</option>
+            <option class="text-black" value="Free" {% if filter == 'Free' %}selected{% endif %}>Бесплатные</option>
+            <option class="text-black" value="Paid" {% if filter == 'Paid' %}selected{% endif %}>Платные</option>
+        </select>
+        {% endwith %}
+    </form>
+
+    <!-- Game list -->
+    <div class="max-w-screen-xl mx-auto p-4 sm:p-10 md:p-14">
     <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
 
         {% for game in game_list %}
@@ -24,7 +45,9 @@
     <div class="flex justify-center w-full mt-8">
         <ul class="flex items-center">
             <li class="px-2">
-                <a href='{% if game_list.has_previous %}?page={{ game_list.previous_page_number }}{% endif %}'
+                <a href='{% if game_list.has_previous %}
+                    ?{% set_query_params page=game_list.previous_page_number %}
+                    {% endif %}'
                     class="w-9 h-9 flex items-center justify-center rounded-md border disabled  hover:text-orange-500">
                     <span>
                         <svg width="8" height="15" viewBox="0 0 8 15" class="fill-current stroke-current">
@@ -38,7 +61,7 @@
 
             {% for page in game_list.paginator.page_range %}
             <li class="px-2">
-                <a href='?page={{ page }}' class="
+                <a href='?{% set_query_params page=page %}' class="
                     {% if page == current_page %}bg-orange-500 text-white pointer-events-none{% endif %}
                     w-9 h-9 flex items-center justify-center rounded-md border transition-all ease-in-out duration-300 hover:bg-orange-500 hover:text-white"
                 >{{ page }}
@@ -47,7 +70,10 @@
             {% endfor %}
 
             <li class="px-2">
-                <a href='{% if game_list.has_next %}?page={{ game_list.next_page_number }}{% endif %}'
+                <a href='
+                {% if game_list.has_next %}
+                ?{% set_query_params page=game_list.next_page_number %}
+                {% endif %}'
                     class="w-9 h-9 flex items-center justify-center rounded-md border hover:text-orange-500">
                     <span>
                         <svg width="8" height="15" viewBox="0 0 8 15" class="fill-current stroke-current">
