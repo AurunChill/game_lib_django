@@ -27,3 +27,11 @@ class GameModelAdmin(admin.ModelAdmin):
         if game.image:
             return mark_safe(f'<img src="{game.image.url}" style="border-radius: 10px" width=250>')
         return 'Нет обложки'
+    
+     
+@admin.register(models.WishListModel)
+class CartItemModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'game')
+    search_fields = ['user__username', 'game__name']  # Assuming 'username' in User and 'name' in Game
+    list_filter = ['user', 'game']
+    fields = ('user', 'game')

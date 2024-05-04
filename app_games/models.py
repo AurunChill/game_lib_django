@@ -37,3 +37,20 @@ class GameModel(models.Model):
 
     def __str__(self):
         return f'{self.title} ({self.author})'
+    
+
+class WishListModel(models.Model):
+    user = models.ForeignKey(to=UserModel, on_delete=models.CASCADE, related_name='wishlist_user', verbose_name='Пользователь')
+    game = models.ForeignKey(to=GameModel, on_delete=models.CASCADE, related_name='wishlist_game', verbose_name='Игра')
+
+    class Meta:
+        db_table = 'wishlist'
+        verbose_name = 'Списку Желаемоего'
+        verbose_name_plural = 'Списки Желаемого'
+        ordering = ('id',)
+
+    def __repr__(self) -> str:
+        return f'Withlist(id:{self.pk}, user:{self.user.username}, game:{self.game.title})'
+
+    def __str__(self):
+        return f'{self.user.username} добавил {self.game.title} в список желаемого'

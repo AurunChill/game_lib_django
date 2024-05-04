@@ -29,4 +29,4 @@ function displayPreview(file) {
         let preview = document.getElementById('preview');
         preview.src = reader.result;
     };
-}
+} 

@@ -1,16 +1,25 @@
 from django.views.generic import ListView, DetailView
+from django.views import View
 from django.db.models import F, ExpressionWrapper, DecimalField
-from app_games.models import GameModel
-from app_games.search import q_search
+from django.http import JsonResponse
 from django.core.paginator import Paginator
 
+# Project
+from app_games.models import GameModel, WishListModel
+from app_games.search import q_search
+from app_users.models import UserModel
+
+# Standard
 from enum import Enum
+import json
+
 
 class SearchFilters(Enum):
     ALL = 'all'
     DISCOUNT = 'discount'
     FREE = 'free'
     PAID = 'paid'
+    WISHLISTED = 'wishlisted'
 
 
 class CatalogView(ListView):
@@ -37,6 +46,13 @@ class CatalogView(ListView):
                         output_field=DecimalField(),
                     )
                 ).filter(total_price=0)
+            case SearchFilters.WISHLISTED.value:
+                user = self.request.user  # Get the current user
+                if user.is_authenticated:
+                    wishlist_games = WishListModel.objects.filter(user=user).values_list('game')
+                    queryset = queryset.filter(pk__in=wishlist_games)
+                else:
+                    queryset = GameModel.objects.none()
                 
         page = int(self.request.GET.get('page', 1))
         paginator = Paginator(object_list=queryset, per_page=6)
@@ -66,3 +82,43 @@ class GameDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.title
         return context
+    
+
+class WishListItemCreateView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            game_id = data.get('game_id')
+            user_id = data.get('user_id')
+            if game_id and user_id:
+                game = GameModel.objects.get(pk=game_id)
+                user = UserModel.objects.get(pk=user_id)
+                if game and user:
+                    WishListModel.objects.create(user=user, game=game)
+                    return JsonResponse({'message': 'WishList item created successfully'})
+                else:
+                    return JsonResponse({'error': 'No such game or user in database'}, status=400)
+            else:
+                 return JsonResponse({'error': 'game_id or user_id is missing'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+
+class WishListItemRemoveView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            game_id = data.get('game_id')
+            user_id = data.get('user_id')
+            if game_id and user_id:
+                game = GameModel.objects.get(pk=game_id)
+                user = UserModel.objects.get(pk=user_id)
+                if game and user:
+                    WishListModel.objects.filter(user=user).filter(game=game).delete()
+                    return JsonResponse({'message': 'WishList item deleted successfully'})
+                else:
+                    return JsonResponse({'error': 'No such game or user in database'}, status=400)
+            else:
+                 return JsonResponse({'error': 'game_id or user_id is missing'}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)

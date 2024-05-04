@@ -1,31 +1,31 @@
-const CartButtonOptions = {
-    ADD_TO_CART: 'Добавить в корзину',
-    REMOVE_FROM_CART: 'Убрать из корзины'
+const WishListButtonOptions = {
+    ADD_TO_WISHLIST: 'В желаемое',
+    REMOVE_FROM_WISHLIST: 'Убрать из желаемого'
 }
 
-function handle_btn_cart_click(user_id, game_id, is_authenticated) {
+function handle_btn_wishlist_click(user_id, game_id, is_authenticated) {
     if (is_authenticated === 'False') {
         window.location.href = '/login/';
         return;
     }
 
-    let button = document.querySelector('#cart_btn')
+    let button = document.querySelector('#wishlist_btn')
     let is_adding = true
 
     switch (button.innerText) {
-        case CartButtonOptions.ADD_TO_CART:
+        case WishListButtonOptions.ADD_TO_WISHLIST:
             is_adding = true
-            button.innerText = CartButtonOptions.REMOVE_FROM_CART;
+            button.innerText = WishListButtonOptions.REMOVE_FROM_WISHLIST;
             break;
-        case CartButtonOptions.REMOVE_FROM_CART:
+        case WishListButtonOptions.REMOVE_FROM_WISHLIST:
             is_adding = false
-            button.innerText = CartButtonOptions.ADD_TO_CART;
+            button.innerText = WishListButtonOptions.ADD_TO_WISHLIST;
             break;
     }
  
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     if (is_adding) {
-        fetch('/add_to_cart/', { // Make sure to adjust the URL if necessary
+        fetch('/add_to_wishlist/', { // Make sure to adjust the URL if necessary
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ function handle_btn_cart_click(user_id, game_id, is_authenticated) {
             }
         );
     } else {
-        fetch('/remove_from_cart/', { // Make sure to adjust the URL if necessary
+        fetch('/remove_from_withlist/', { // Make sure to adjust the URL if necessary
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
