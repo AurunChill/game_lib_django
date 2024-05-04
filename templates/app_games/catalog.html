@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load user_tags %}
+{% load game_tags %}
 
 {% block content %}
     <!-- Search -->
@@ -13,15 +13,32 @@
                 <button type="submit" class="bg-orange-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Поиск</button>
             {% endwith %}
         </div>
-        {% with request.GET.pricing_type as filter %}
+        {% with request.GET.pricing_type as filter %}        
         <select id="pricing_type" name="pricing_type"
-            class=" h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
-            <option class="text-black" value="all" {% if not filter %}selected{% endif %}>Все</option>
-            <option class="text-black" value="discount" {% if filter == 'discount' %}selected{% endif %}>Со скидкой</option>
-            <option class="text-black" value="free" {% if filter == 'free' %}selected{% endif %}>Бесплатные</option>
-            <option class="text-black" value="paid" {% if filter == 'paid' %}selected{% endif %}>Платные</option>
+        class="z-30 h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider bg-white">
+            <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="all" {% if not filter %}selected{% endif %}>Все</option>
+            <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="discount" {% if filter == 'discount' %}selected{% endif %}>Со скидкой</option>
+            <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="free" {% if filter == 'free' %}selected{% endif %}>Бесплатные</option>
+            <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="paid" {% if filter == 'paid' %}selected{% endif %}>Платные</option>
         </select>
         {% endwith %}
+
+        <div class="flex flex-col md:flex-row justify-end flex-grow">
+            <div class='p-2 rounded-md bg-orange-500 flex mr-4'>
+                <a href="{% url 'carts:cart' %}" class="text-white mx-4">
+                    Корзина
+                </a>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
+                class='w-6 h-6 text-white'>
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+        </div>
     </form>
 
     <!-- Game list -->
@@ -33,8 +50,22 @@
             <img src="{{ game.image.url }}" class="w-full mb-3 rounded-t-xl">
             <div class="">
                 <div class="px-4 mb-4">
-                    <a href="{{ game.get_absolute_url }}"
-                        class="card_link text-gray-900 font-bold text-lg mb-2 inline-block">{{ game.title }}</a>
+                    <div class='flex flex-row justify-between'>
+                        <a href="{{ game.get_absolute_url }}"
+                            class="card_link text-gray-900 font-bold text-lg mb-2 inline-block justify-self-start">{{ game.title }}</a>
+                        {% in_user_cart user.id game.pk as in_cart %}
+                        {% if in_cart %}
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
+                            class='w-6 h-6 text-gray-800'>
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    </path>
+                                </g>
+                            </svg>
+                        {% endif %} 
+                    </div>
                     <p class="text-gray-700 text-sm">{{ game.description|truncatechars:30 }}</p>
                     <p class="text-sm text-gray-500 mt-2">{{ game.author }}</p>
                     <div class="flex flex-row justify-between">

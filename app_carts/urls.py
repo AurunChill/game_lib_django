@@ -17,14 +17,12 @@ Including another URLconf
 from django.urls import path
 
 # Project
-from app_users import views
+from app_carts import views
 
-app_name = 'users'
+app_name = 'carts'
 
 urlpatterns = [
-    path(route='login/', view=views.LoginView.as_view(), name='login'),
-    path(route='registration/', view=views.RegistrationView.as_view(), name='registration'),
-    path(route='logout/', view=views.LogoutView.as_view(), name='logout'),
-    path(route='user/<str:username>', view=views.UserProfileView.as_view(), name='profile'),
-    path(route='change-password/', view=views.UserPasswordChangeView.as_view(), name='password_change'),
+    path(route='cart/', view=views.CartViewList.as_view(), name='cart'),
+    path(route='add_to_cart/', view=views.CartItemCreateView.as_view(), name='cart_create'),
+    path(route='remove_from_cart/', view=views.CartItemRemoveView.as_view(), name='cart_remove'),
 ]

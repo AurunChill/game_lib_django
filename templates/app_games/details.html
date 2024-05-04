@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load game_tags %}
 
 {% block content %}
 <div class="bg-gray-100 py-8">
@@ -9,10 +10,14 @@
                 <div class="h-[460px] rounded-lg bg-gray-300 mb-4">
                     <img class="w-full h-full object-cover rounded-lg" src="{{ game.image.url }}" alt="Product Image">
                 </div>
-                <div class="flex -mx-2 mb-4">
+                <div class="flex -mx-2 mb-4">   
                     <div class="w-1/2 px-2">
-                        <button class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700">Добавать в корзину</button>
+                        <button id="cart_btn" onclick='handle_btn_cart_click({{ user.id }}, {{game.pk}})' class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700">
+                            {% in_user_cart user.id game.pk as in_cart %}
+                            {% if not in_cart %}Добавить в корзину{% else %}Убрать из корзины{% endif %}
+                        </button>
                     </div>
+                    {% csrf_token %}
                     <div class="w-1/2 px-2">
                         <button class="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-bold hover:bg-gray-300">Добавить в WishList</button>
                     </div>
@@ -57,3 +62,7 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'scripts/carts/cart_button.js' %}"></script>
+{% endblock scripts %}
