@@ -1,7 +1,10 @@
 from typing import Any
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm, UserCreationForm,
+    PasswordChangeForm
+)
 
 UserModel = get_user_model()
 
@@ -41,4 +44,14 @@ class UserRegistrationForm(UserCreationForm):
             else:
                 raise forms.ValidationError('Аккаунт с таким именем/почтой уже существует', code='invalid_registration')
 
-        return self.cleaned_data
+        return self.cleaned_data 
+    
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
+        
+        self.fields['old_password'].widget.attrs['id'] = 'old_password'
+        self.fields['new_password1'].widget.attrs['id'] = 'new_password1'
+        self.fields['new_password2'].widget.attrs['id'] = 'new_password2'
+

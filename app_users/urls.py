@@ -25,5 +25,7 @@ urlpatterns = [
     path(route='login/', view=views.LoginView.as_view(), name='login'),
     path(route='registration/', view=views.RegistrationView.as_view(), name='registration'),
     path(route='logout/', view=views.LogoutView.as_view(), name='logout'),
-    path(route='user/<str:username>', view=views.UserProfileView.as_view(), name='profile') 
+    path(route='user/<str:username>', view=views.UserProfileView.as_view(), name='profile'),
+
+    path(route='change-password/', view=views.UserPasswordChangeView.as_view(), name='password_change'),
 ]

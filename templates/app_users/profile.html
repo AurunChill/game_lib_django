@@ -52,7 +52,13 @@
                                     class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                     value='{{ user.email }}' type="text">
                             </div>
+
                             <br>
+                                <div>
+                                    <a href='{% url "users:password_change" %}' class="text-gray-800 transition-color duration-300 ease-in-out hover:text-orange-600">Изменить пароль?</a>
+                                </div>
+                            <br>
+
                             <div class="flex justify-between">
                                 <button
                                     class="py-1.5 px-3 m-1 text-center bg-orange-600 border rounded-md text-white  hover:bg-orange-700"

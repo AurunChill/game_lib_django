@@ -7,9 +7,10 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import PasswordChangeDoneView, PasswordChangeView
 
 # Project
-from app_users.forms import UserLoginForm, UserRegistrationForm
+from app_users.forms import UserLoginForm, UserRegistrationForm, UserPasswordChangeForm
 
 
 class LoginView(FormView):
@@ -20,7 +21,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         user = form.get_user()
         auth.login(self.request, user)
-        return super().form_valid(form)
+        return super().form_valid(form) 
 
 
 class RegistrationView(CreateView):
@@ -50,3 +51,11 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.username
         return context
+    
+
+class UserPasswordChangeView(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    template_name = 'app_users/password_change.html'
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()

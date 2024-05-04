@@ -24,7 +24,6 @@ class CatalogView(ListView):
         query = self.request.GET.get('search')
         if query:
             queryset = q_search(query)
-
         search_filter = self.request.GET.get('pricing_type', SearchFilters.ALL.value).lower()
         match search_filter:
             case SearchFilters.DISCOUNT.value:
@@ -56,7 +55,7 @@ class GameDetailView(DetailView):
     template_name = 'app_games/details.html'
     context_object_name = 'game'
     slug_url_kwarg = 'game_slug'
-    slug_field = 'slug'  # Assuming your GameModel has a slug field for Game's URL
+    slug_field = 'slug'
 
     def get_queryset(self):
         queryset = super().get_queryset()

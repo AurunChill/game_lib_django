@@ -792,6 +792,10 @@ video {
   display: inline-block;
 }
 
+.inline {
+  display: inline;
+}
+
 .flex {
   display: flex;
 }
@@ -1540,6 +1544,10 @@ video {
   transition-duration: 150ms;
 }
 
+.delay-300 {
+  transition-delay: 300ms;
+}
+
 .duration-300 {
   transition-duration: 300ms;
 }
@@ -1554,6 +1562,14 @@ video {
 
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ease-in {
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.ease-linear {
+  transition-timing-function: linear;
 }
 
 .placeholder\:text-gray-800::-moz-placeholder {
