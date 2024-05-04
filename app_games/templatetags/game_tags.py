@@ -18,7 +18,10 @@ def set_query_params(context, **kwargs):
 
 
 @register.simple_tag()
-def in_user_cart(user_id: int, game_id: int):
+def in_user_cart(user_id: int | None, game_id: int):
+    if not user_id:
+        return False
+    
     game = GameModel.objects.get(pk=game_id)
     user = UserModel.objects.get(pk=user_id)
 
@@ -28,7 +31,10 @@ def in_user_cart(user_id: int, game_id: int):
     
 
 @register.simple_tag()
-def in_user_wishlist(user_id: int, game_id: int):
+def in_user_wishlist(user_id: int | None, game_id: int):
+    if not user_id:
+        return False
+    
     game = GameModel.objects.get(pk=game_id)
     user = UserModel.objects.get(pk=user_id)
 

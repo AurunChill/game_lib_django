@@ -26,7 +26,6 @@ class CatalogView(ListView):
     model = GameModel
     template_name = 'app_games/catalog.html'
     context_object_name = 'game_list'
-    paginate_by = 1
 
     def get_queryset(self):
         queryset = super().get_queryset()
