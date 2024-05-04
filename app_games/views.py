@@ -8,6 +8,7 @@ from enum import Enum
 
 # Project
 from app_games.models import GameModel
+from app_games.search import q_search
 
 
 class SearchFilters(Enum):
@@ -21,14 +22,18 @@ def catalog(request: HttpRequest) -> HttpResponse:
     games = GameModel.objects.all()
     data = request.GET
     if data:
+        query = data.get('search')
+        if query:
+            games = q_search(query)
+
         search_filter = data.get('pricing_type', SearchFilters.ALL.value).lower()
         match search_filter:
             case SearchFilters.DISCOUNT.value:
-                games = GameModel.objects.filter(discount__gt=0)
+                games = games.filter(discount__gt=0)
             case SearchFilters.PAID.value:
-                games = GameModel.objects.filter(discount=0)
+                games = games.filter(price__gt=0)
             case SearchFilters.FREE.value:
-                games = GameModel.objects.annotate(
+                games = games.annotate(
                     total_price=ExpressionWrapper(
                         F('price') * (1 - F('discount') / 100),
                         output_field=DecimalField(),

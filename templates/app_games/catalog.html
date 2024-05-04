@@ -14,10 +14,10 @@
         {% with request.GET.pricing_type as filter %}
         <select id="pricing_type" name="pricing_type"
             class=" h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
-            <option class="text-black" value="All" {% if not filter %}selected{% endif %}>Все</option>
-            <option class="text-black" value="Discount" {% if filter == 'Discount' %}selected{% endif %}>Со скидкой</option>
-            <option class="text-black" value="Free" {% if filter == 'Free' %}selected{% endif %}>Бесплатные</option>
-            <option class="text-black" value="Paid" {% if filter == 'Paid' %}selected{% endif %}>Платные</option>
+            <option class="text-black" value="all" {% if not filter %}selected{% endif %}>Все</option>
+            <option class="text-black" value="discount" {% if filter == 'discount' %}selected{% endif %}>Со скидкой</option>
+            <option class="text-black" value="free" {% if filter == 'free' %}selected{% endif %}>Бесплатные</option>
+            <option class="text-black" value="paid" {% if filter == 'paid' %}selected{% endif %}>Платные</option>
         </select>
         {% endwith %}
     </form>
