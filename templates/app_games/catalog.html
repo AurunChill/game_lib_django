@@ -6,10 +6,12 @@
     <!-- Search -->
     <form class="flex flex-col md:flex-row gap-3 ms-4 mt-4" method="GET">
         <div class="flex">
-            <input id='search' name='search' type="text" placeholder="Поиск игры/автора"
-                class="md:w-80 px-3 h-10 border-t border-b border-l rounded-sm focus:outline-none focus:border-orange-500"
-                >
-            <button type="submit" class="bg-orange-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Поиск</button>
+            {% with search=request.GET.search %}
+                <input id='search' name='search' type="text" placeholder="Поиск игры/автора" value="{% if search %}{{ search }}{% endif %}"
+                    class="md:w-80 px-3 h-10 border-t border-b border-l rounded-sm focus:outline-none focus:border-orange-500"
+                    >
+                <button type="submit" class="bg-orange-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Поиск</button>
+            {% endwith %}
         </div>
         {% with request.GET.pricing_type as filter %}
         <select id="pricing_type" name="pricing_type"
@@ -40,7 +42,7 @@
                             <p class="text-sm text-gray-500 mt-2">₽{{ game.total_price|floatformat }} <span class="text-[12px] text-gray-400 line-through">{{ game.price|floatformat }}</span></p>
                             <span class="text-sm text-gray-500 mt-2">Скидка {{ game.discount|floatformat }}%</span>
                         {% else %}
-                            <p class="text-sm text-gray-500 mt-2">₽{{ game.total_price|floatformat:2 }}</p>
+                            <p class="text-sm text-gray-500 mt-2">₽{{ game.total_price|floatformat }}</p>
                         {% endif %}
                     </div>
                 </div>

@@ -3,10 +3,68 @@
 
 
 {% block content %}
-    {{ user.username }}
-    <form action="{% url 'users:logout' %}" method="post">
-        {% csrf_token %}
-        
-        <button type="submit">Logout</button>
-    </form>
+    <div class="flex  bg-gray-100">
+        <!-- Main content -->
+        <div class="flex flex-col flex-1 mt-4">
+            <div class="flex justify-center px-8">
+                <form class="max-w-2xl">
+                    {% csrf_token %}
+                    <div class="flex flex-wrap border shadow rounded-lg p-3">
+                        <h2 class="text-xl text-gray-600 pb-2">Настройка аккаунта:</h2>
+                        <div class="flex flex-col gap-2 w-full border-gray-400">
+
+                            <label class="text-gray-600">Аватар</label>
+                            <div class="relative h-64 w-64 my-2 self-center">
+                                <img src="{{ user.image.url }}"
+                                    id="preview"
+                                    class="relative object-cover rounded-xl" >
+                            </div>
+
+                            <div class="w-[400px] self-center relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
+                                <input id="file-upload" type="file" class="absolute inset-0 w-full h-full opacity-0 z-50" />
+                                <div class="text-center">
+                                    <img class="mx-auto h-12 w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg" alt="">
+                                    <label for="file-upload" class="relative cursor-pointer">
+                                            <span class="text-orange-600">Перенесите</span> или <span class="text-orange-600">выберите</span>
+                                            <span>изображение на загрузку</span>
+                                        </label>
+                                </div>
+                            </div><br>
+            
+                            <div>
+                                <label class="text-gray-600">Имя пользователя</label>
+                                <input
+                                    class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                    value="{{ user.username }}" type="text">
+                            </div>
+            
+                            <div>
+                                <label class="text-gray-600">Email</label>
+                                <input
+                                    class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                    value='{{ user.email }}' type="text">
+                            </div>
+                            <br>
+                            <div class="flex justify-between">
+                                <button
+                                    class="py-1.5 px-3 m-1 text-center bg-orange-600 border rounded-md text-white  hover:bg-orange-700"
+                                    type="submit">Сохранить изменения</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form action="{% url 'users:logout' %}" method="post">
+                    {% csrf_token %}
+                
+                    <button class="py-1.5 px-3 m-1 text-center bg-orange-600 border rounded-md text-white  hover:bg-orange-700"
+                    type="submit">Выйти из аккаунта</button>
+                </form> 
+            </div>
+        </div>
+    </div>
 {% endblock content %}
+
+
+{% block scripts %}
+    <script src="{% static 'scripts/upload_image.js' %}"></script>
+{% endblock scripts %}
