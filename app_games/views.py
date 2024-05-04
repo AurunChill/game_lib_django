@@ -1,15 +1,10 @@
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
-from django.core.paginator import Paginator
+from django.views.generic import ListView, DetailView
 from django.db.models import F, ExpressionWrapper, DecimalField
-
-# Standard
-from enum import Enum
-
-# Project
 from app_games.models import GameModel
 from app_games.search import q_search
+from django.core.paginator import Paginator
 
+from enum import Enum
 
 class SearchFilters(Enum):
     ALL = 'all'
@@ -18,52 +13,57 @@ class SearchFilters(Enum):
     PAID = 'paid'
 
 
-def catalog(request: HttpRequest) -> HttpResponse:
-    games = GameModel.objects.all()
-    data = request.GET
-    if data:
-        query = data.get('search')
-        if query:
-            games = q_search(query)
+class CatalogView(ListView):
+    model = GameModel
+    template_name = 'app_games/catalog.html'
+    context_object_name = 'game_list'
+    paginate_by = 1
 
-        search_filter = data.get('pricing_type', SearchFilters.ALL.value).lower()
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('search')
+        if query:
+            queryset = q_search(query)
+
+        search_filter = self.request.GET.get('pricing_type', SearchFilters.ALL.value).lower()
         match search_filter:
             case SearchFilters.DISCOUNT.value:
-                games = games.filter(discount__gt=0)
+                queryset = queryset.filter(discount__gt=0)
             case SearchFilters.PAID.value:
-                games = games.filter(price__gt=0)
+                queryset = queryset.filter(price__gt=0)
             case SearchFilters.FREE.value:
-                games = games.annotate(
+                queryset = queryset.annotate(
                     total_price=ExpressionWrapper(
                         F('price') * (1 - F('discount') / 100),
                         output_field=DecimalField(),
                     )
                 ).filter(total_price=0)
                 
-    page = data.get('page', 1)
+        page = int(self.request.GET.get('page', 1))
+        paginator = Paginator(object_list=queryset, per_page=6)
+        return paginator.get_page(page)
 
-    paginator = Paginator(object_list=games, per_page=6)
-    current_page = int(page)
-    current_page_games = paginator.page(current_page)
-
-    context = {
-        'title': 'Каталог',
-        'game_list': current_page_games,
-        'current_page': current_page,
-    }
-
-    return render(
-        request=request, template_name='app_games/catalog.html', context=context
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Каталог'
+        context['current_page'] = int(self.request.GET.get('page', 1))
+        context['game_list'] = self.get_queryset()
+        return context
 
 
-def game(requst: HttpRequest, author: str, game_slug: str) -> HttpResponse:
-    game = (
-        GameModel.objects.filter(author__username=author).filter(slug=game_slug).first()
-    )
+class GameDetailView(DetailView):
+    model = GameModel
+    template_name = 'app_games/details.html'
+    context_object_name = 'game'
+    slug_url_kwarg = 'game_slug'
+    slug_field = 'slug'  # Assuming your GameModel has a slug field for Game's URL
 
-    context = {'title': game.title, 'game': game}
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author__username=self.kwargs.get('author'))
+        return queryset
 
-    return render(
-        request=requst, template_name='app_games/details.html', context=context
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object.title
+        return context

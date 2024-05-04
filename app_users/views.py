@@ -1,73 +1,52 @@
-from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
-from django.shortcuts import render, redirect
 import django.contrib.auth as auth
-from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model
 
 # Project
 from app_users.forms import UserLoginForm, UserRegistrationForm
 
 
-def login(request: HttpRequest) -> HttpResponse:
-    data = request.POST
-    if data:
-        form = UserLoginForm(data=data)
-        if form.is_valid():
-            user = form.get_user()
-            auth.login(request, user)
-            return redirect(user.get_absolute_url())  # Redirect user to home page or another appropriate page
-    else:
-        form = UserLoginForm()
+class LoginView(FormView):
+    form_class = UserLoginForm
+    template_name = 'app_users/auth_login.html'
+    success_url = reverse_lazy('games:catalog') # You need to define the URL to redirect after login
 
-    context = {
-        'title': 'Вход',
-        'form': form,
-    }
-
-    return render(
-        request=request,
-        template_name='app_users/auth_login.html',
-        context=context
-    )
+    def form_valid(self, form):
+        user = form.get_user()
+        auth.login(self.request, user)
+        return super().form_valid(form)
 
 
-def registration(request: HttpRequest) -> HttpResponse:
-    data = request.POST
-    if data:
-        form = UserRegistrationForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('games:catalog'))  # Redirect to a different page after successful registration
-    else:
-        form = UserRegistrationForm()
+class RegistrationView(CreateView):
+    form_class = UserRegistrationForm
+    template_name = 'app_users/auth_registration.html'
+    success_url = reverse_lazy('users:login')  # Adjust to the correct URL based on your URL configuration
 
-    context = {
-        'title': 'Регистрация',
-        'form': form
-    }
-
-    return render(
-        request=request,
-        template_name='app_users/auth_registration.html',
-        context=context
-    )
+    def form_valid(self, form):
+        self.object = form.save()
+        return super().form_valid(form)
 
 
-@login_required
-def logout(request: HttpRequest) -> HttpResponse:
-    auth.logout(request=request)
+class LogoutView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        auth.logout(request)
+        return redirect(reverse('users:login'))
 
-    return redirect(reverse('users:login'))
 
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = get_user_model()
+    template_name = 'app_users/profile.html'
+    context_object_name = 'profile'
+    slug_field = "username"
+    slug_url_kwarg = "username"
 
-@login_required()
-def user_profile(request: HttpRequest, username: str) -> HttpResponse:
-    context = {
-        'title': username
-    }
-
-    return render(
-        request=request,
-        template_name='app_users/profile.html',
-        context=context
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object.username
+        return context

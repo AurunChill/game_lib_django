@@ -1,38 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
+from django.views.generic import TemplateView
 
 
-def index(request: HttpRequest) -> HttpResponse:
-    context = {
-        'title': 'Главная'
-    }
+class IndexView(TemplateView):
+    template_name = 'app_main/index.html'
+    extra_context = {'title': 'Главная'}
+    
 
-    return render(
-        request=request, 
-        template_name='app_main/index.html',
-        context=context
-    )
+class AboutView(TemplateView):
+    template_name = 'app_main/about.html'
+    extra_context = {'title': 'О нас'}
 
 
-def about(request: HttpRequest) -> HttpResponse:
-    context = {
-        'title': 'О нас'
-    }
-
-    return render(
-        request=request, 
-        template_name='app_main/about.html',
-        context=context
-    )
-
-
-def contacts(request: HttpRequest) -> HttpResponse:
-    context = {
-        'title': 'Контакты'
-    }
-
-    return render(
-        request=request, 
-        template_name='app_main/contacts.html',
-        context=context
-    )
+class ContactsView(TemplateView):
+    template_name = 'app_main/contacts.html'
+    extra_context = {'title': 'Контакты'}
+    
