@@ -35,6 +35,14 @@
                         class="card_link text-gray-900 font-bold text-lg mb-2 inline-block">{{ game.title }}</a>
                     <p class="text-gray-700 text-sm">{{ game.description|truncatechars:30 }}</p>
                     <p class="text-sm text-gray-500 mt-2">{{ game.author }}</p>
+                    <div class="flex flex-row justify-between">
+                        {% if game.discount != 0 %}
+                            <p class="text-sm text-gray-500 mt-2">₽{{ game.total_price|floatformat }} <span class="text-[12px] text-gray-400 line-through">{{ game.price|floatformat }}</span></p>
+                            <span class="text-sm text-gray-500 mt-2">Скидка {{ game.discount|floatformat }}%</span>
+                        {% else %}
+                            <p class="text-sm text-gray-500 mt-2">₽{{ game.total_price|floatformat:2 }}</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
