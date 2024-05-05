@@ -20,44 +20,94 @@ class SearchFilters(Enum):
     FREE = 'free'
     PAID = 'paid'
     WISHLISTED = 'wishlisted'
+    MINE = 'mine'
 
 
 class CatalogView(ListView):
+    """
+    Display a catalog of games with optional filters and search.
+    """
     model = GameModel
     template_name = 'app_games/catalog.html'
     context_object_name = 'game_list'
 
     def get_queryset(self):
+        """
+        Retrieve the queryset based on search and filter criteria.
+        """
         queryset = super().get_queryset()
+        queryset = self.apply_search(queryset)
+        queryset = self.apply_filters(queryset)
+        return self.paginate_queryset(queryset)
+
+    def apply_search(self, queryset):
+        """
+        Apply search query to the queryset if search parameter is provided.
+        """
         query = self.request.GET.get('search')
-        if query:
-            queryset = q_search(query)
+        return q_search(query) if query else queryset
+
+    def apply_filters(self, queryset):
+        """
+        Apply filter based on the pricing_type parameter to the queryset.
+        """
         search_filter = self.request.GET.get('pricing_type', SearchFilters.ALL.value).lower()
         match search_filter:
             case SearchFilters.DISCOUNT.value:
-                queryset = queryset.filter(discount__gt=0)
+                return queryset.filter(discount__gt=0)
             case SearchFilters.PAID.value:
-                queryset = queryset.filter(price__gt=0)
+                return queryset.filter(price__gt=0)
             case SearchFilters.FREE.value:
-                queryset = queryset.annotate(
-                    total_price=ExpressionWrapper(
-                        F('price') * (1 - F('discount') / 100),
-                        output_field=DecimalField(),
-                    )
-                ).filter(total_price=0)
+                return self.filter_free_games(queryset)
             case SearchFilters.WISHLISTED.value:
-                user = self.request.user  # Get the current user
-                if user.is_authenticated:
-                    wishlist_games = WishListModel.objects.filter(user=user).values_list('game')
-                    queryset = queryset.filter(pk__in=wishlist_games)
-                else:
-                    queryset = GameModel.objects.none()
-                
-        page = int(self.request.GET.get('page', 1))
-        paginator = Paginator(object_list=queryset, per_page=6)
+                return self.filter_wishlisted_games(queryset)
+            case SearchFilters.MINE.value:
+                return self.filter_owned_games(queryset)
+            case _:
+                return queryset
+
+    def filter_free_games(self, queryset):
+        """
+        Filter queryset to include only games that are effectively free.
+        """
+        return queryset.annotate(
+            total_price=ExpressionWrapper(
+                F('price') * (1 - F('discount') / 100),
+                output_field=DecimalField(),
+            )
+        ).filter(total_price=0)
+
+    def filter_wishlisted_games(self, queryset):
+        """
+        Filter queryset to include only games that are wishlisted by the current user.
+        """
+        user = self.request.user
+        if user.is_authenticated:
+            wishlist_games = WishListModel.objects.filter(user=user).values_list('game', flat=True)
+            return queryset.filter(pk__in=wishlist_games)
+        return GameModel.objects.none()
+
+    def filter_owned_games(self, queryset):
+        """
+        Filter queryset to include only games owned by the current user.
+        """
+        user = self.request.user
+        if user.is_authenticated:
+            return queryset.filter(author=user)
+        return GameModel.objects.none()
+
+    def paginate_queryset(self, queryset):
+        """
+        Paginate the queryset.
+        """
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(queryset, per_page=6)
         return paginator.get_page(page)
 
     def get_context_data(self, **kwargs):
+        """
+        Get the context for this view.
+        """
         context = super().get_context_data(**kwargs)
         context['title'] = 'Каталог'
         context['current_page'] = int(self.request.GET.get('page', 1))

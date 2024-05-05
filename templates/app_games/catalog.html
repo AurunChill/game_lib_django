@@ -21,6 +21,7 @@
             <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="free" {% if filter == 'free' %}selected{% endif %}>Бесплатные</option>
             <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="paid" {% if filter == 'paid' %}selected{% endif %}>Платные</option>
             <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="wishlisted" {% if filter == 'wishlisted' %}selected{% endif %}>В списке желаемого</option>
+            <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="mine" {% if filter == 'mine' %}selected{% endif %}>Мои игры</option>
         </select>
         {% endwith %}
 
@@ -79,7 +80,7 @@
                         {% endif %}
                     </div>
                     <p class="text-gray-700 text-sm">{{ game.description|truncatechars:30 }}</p>
-                    <p class="text-sm text-gray-500 mt-2">{{ game.author }}</p>
+                    <a href='?{% set_query_params search=game.author.username %}' class="text-sm text-gray-500 mt-2">{{ game.author.username }}</a>
                     <div class="flex flex-row justify-between">
                         {% if game.discount != 0 %}
                             <p class="text-sm text-gray-500 mt-2">₽{{ game.total_price|floatformat }} <span class="text-[12px] text-gray-400 line-through">{{ game.price|floatformat }}</span></p>
