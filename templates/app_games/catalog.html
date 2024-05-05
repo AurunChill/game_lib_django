@@ -59,7 +59,8 @@
                                 {% in_user_cart user.id game.pk as in_cart %}
                                 {% in_user_wishlist user.id game.pk as in_wishlist %}
                             {% if in_cart %}
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" class='w-6 h-6 text-gray-800'>
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
+                                class='cart_icon_{{game.id}} w-6 h-6 text-gray-800'>
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                     <g id="SVGRepo_iconCarrier">
@@ -68,7 +69,8 @@
                                     </g>
                                 </svg>
                             {% elif in_wishlist %}
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class='w-6 h-6 text-gray-800'>
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                class='wish_icon_{{game.id}} w-6 h-6 text-gray-800'>
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                     <g id="SVGRepo_iconCarrier"> 
@@ -143,3 +145,14 @@
 
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+    window.onpageshow = function(event) {
+      if (event.persisted || window.performance && window.performance.navigation.type === 2) {
+        window.location.reload();
+        window.onpageshow = null; // Unset the event handler after reload
+      }
+    };
+  </script>
+{% endblock scripts %}

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="bg-gray-100 h-screen py-8">
+<div class="bg-gray-100 py-8">
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-semibold text-gray-800 md:text-4xl">Корзина</h1>
         <div class="flex flex-col md:flex-row gap-4 mt-4">
@@ -15,11 +15,13 @@
                                 <th class="py-2 px-4 text-left font-semibold w-1/4">Цена</th>
                                 <th class="py-2 px-4 text-left font-semibold w-1/4">Скидка</th>
                                 <th class="py-2 px-4 text-left font-semibold w-1/4">Итого</th>
+                                <th class="py-2 px-4 text-left font-semibold"></th>
                             </tr>
                         </thead>
-                        {% for item in cart_items %}
                         <tbody>
-                            <tr>
+                        {% csrf_token %}
+                        {% for item in cart_items %}
+                            <tr class='item_{{item.id}}'>
                                 <td class="py-4 px-4 w-1/4">
                                     <div class="flex items-center">
                                         <img class="h-16 w-16 mr-4 rounded-md" src="{{ item.game.image.url }}"
@@ -31,10 +33,22 @@
                                 <td class="py-4 px-4 w-1/4">{{ item.game.price|floatformat }}₽</td>
                                 <td class="py-4 px-4 w-1/4">{{ item.game.discount|floatformat }}%</td>
                                 <td class="py-4 px-4 w-1/4">{{ item.game.total_price|floatformat }}₽</td>
+                                <td class=''>
+                                    <div onclick='remove_cart_item_list({{item.id}}, {{user.id}}, {{item.game.id}})' class='rm_from_cart my-5 bg-orange-600 rounded-md hover:bg-orange-700'>
+                                        <svg class="text-white"
+                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                            <g id="SVGRepo_iconCarrier"> 
+                                                <path d="M6 12L18 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> 
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </td>
                             </tr>
                             <!-- More product rows -->
-                        </tbody>
                         {% endfor %}
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -63,3 +77,8 @@
 
 </div>
 {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'scripts/carts/cart_buttons.js' %}"></script>
+{% endblock scripts %}
+

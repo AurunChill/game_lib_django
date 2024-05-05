@@ -45,12 +45,12 @@ class WishListModel(models.Model):
 
     class Meta:
         db_table = 'wishlist'
-        verbose_name = 'Списку Желаемоего'
+        verbose_name = 'Список Желаемоего'
         verbose_name_plural = 'Списки Желаемого'
         ordering = ('id',)
 
     def __repr__(self) -> str:
-        return f'Withlist(id:{self.pk}, user:{self.user.username}, game:{self.game.title})'
+        return f'Wishlist(id:{self.pk}, user:{self.user.username}, game:{self.game.title})'
 
     def __str__(self):
         return f'{self.user.username} добавил {self.game.title} в список желаемого'
