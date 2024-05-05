@@ -55,3 +55,20 @@ class UserPasswordChangeForm(PasswordChangeForm):
         self.fields['new_password1'].widget.attrs['id'] = 'new_password1'
         self.fields['new_password2'].widget.attrs['id'] = 'new_password2'
 
+
+class UserInfoUpdateForm(forms.ModelForm):
+    image = forms.ImageField(required=False, widget=forms.FileInput(attrs={'id': 'image'}))
+    username = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'username'}))
+    email = forms.EmailField(required=False, widget=forms.EmailInput(attrs={'id': 'email'}))
+
+    class Meta:
+        model = UserModel
+        fields = ['username', 'email', 'image']
+    
+    def clean(self) -> dict[str, Any]:
+        super().clean()
+        username = self.cleaned_data.get('username')
+        if ' ' in username:
+            raise forms.ValidationError('Имя пользователя не должно содержать пробелы!')
+
+        return self.cleaned_data

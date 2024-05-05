@@ -1,21 +1,24 @@
-document.getElementById('file-upload').addEventListener('dragover', e => {
+let file_uploader = document.getElementById('image')
+console.log(file_uploader)
+
+file_uploader.addEventListener('dragover', e => {
     e.preventDefault();
     console.log('drag over');
 });
 
-document.getElementById('file-upload').addEventListener('dragleave', e => {
+file_uploader.addEventListener('dragleave', e => {
     e.preventDefault();
     console.log('drag leave');
 });
 
-document.getElementById('file-upload').addEventListener('drop', e => {
+file_uploader.addEventListener('drop', e => {
     e.preventDefault(); // This is crucial for drop to work
     console.log('drop');
     let file = e.dataTransfer.files[0];
     displayPreview(file);
 });
 
-document.getElementById('file-upload').addEventListener('change', e => {
+file_uploader.addEventListener('change', e => {
     console.log('change')
     let file = e.target.files[0];
     displayPreview(file);

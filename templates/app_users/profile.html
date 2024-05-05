@@ -3,56 +3,75 @@
 
 
 {% block content %}
-    <div class="flex  bg-gray-100">
+<div class="flex">
+    <div class="w-1/4 h-screen sticky top-0 p-4">
+        <h2 class="text-lg font-semibold text-orange-600 mb-4">Действия</h2>
+        <ul class="list-none">
+            <li class="mb-2"><a href="#" class="text-gray-700 hover:text-gray-900">Выложить игру</a></li>
+            <li class="mb-2"><a href="{% url 'users:logout' %}" class="text-gray-700 hover:text-gray-900">
+                Выйти из аккаунта
+            </a></li>
+        </ul>
+    </div>
+    <div class="flex"> 
         <!-- Main content -->
         <div class="flex flex-col flex-1 mt-4">
             <div class="flex justify-center px-8">
-                <form class="max-w-2xl">
+                <form class="max-w-2xl" method='POST' enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="flex flex-wrap border shadow rounded-lg p-3">
-                        <h2 class="text-xl text-gray-600 pb-2">Настройка аккаунта:</h2>
+                        <h2 class="text-xl text-orange-600 pb-2">Настройка аккаунта:</h2>
                         <div class="flex flex-col gap-2 w-full border-gray-400">
 
                             <label class="text-gray-600">Аватар</label>
-                            <div class="relative h-64 w-64 my-2 self-center">
+                            <div class="relative h-64 w-64 my-2 self-center overflow-hidden">
+                                <img id="preview" class="relative object-cover rounded-xl"
                                 {% if not user.image %}
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    class="rounded-xl p-[6px] text-white bg-gray-500 stroke-current">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
+                                    src="{% static 'images/avatar.svg' %}"
                                 {% else %}
-                                    <img src="{{ user.image.url }}"
-                                        id="preview"
-                                        class="relative object-cover rounded-xl" >
+                                    src="{{ user.image.url }}"
                                 {% endif %}
+                                >
                             </div>
 
                             <div class="w-[400px] self-center relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
-                                <input id="file-upload" type="file" class="absolute inset-0 w-full h-full opacity-0 z-50" />
                                 <div class="text-center">
                                     <img class="mx-auto h-12 w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg" alt="">
-                                    <label for="file-upload" class="relative cursor-pointer">
+                                    <label for="image" class="relative cursor-pointer">
                                             <span class="text-orange-600">Перенесите</span> или <span class="text-orange-600">выберите</span>
                                             <span>изображение на загрузку</span>
-                                        </label>
+                                    </label>
+                                    <input id="image" name="image" type="file" class="absolute inset-0 w-full h-full opacity-0 z-50" />
+                                    {% if form.image.errors %}
+                                        <div class="text-red-500 text-sm mt-1">{{ form.old_password.errors.as_text }}</div>
+                                     {% endif %}
                                 </div>
                             </div><br>
             
                             <div>
                                 <label class="text-gray-600">Имя пользователя</label>
-                                <input
+                                <input id="username" name="username"
                                     class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                     value="{{ user.username }}" type="text">
+                                {% if form.userame.errors %}
+                                    <div class="text-red-500 text-sm mt-1">{{ form.old_password.errors.as_text }}</div>
+                                {% endif %}
                             </div>
             
                             <div>
                                 <label class="text-gray-600">Email</label>
-                                <input
+                                <input id="email" name="email"
                                     class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                     value='{{ user.email }}' type="text">
+                                {% if form.email.errors %}
+                                    <div class="text-red-500 text-sm mt-1">{{ form.old_password.errors.as_text }}</div>
+                                {% endif %}
                             </div>
-
+                            {% if form.non_field_errors %}
+                                <div class="text-red-500 text-sm mt-1">
+                                    {{ form.non_field_errors.as_text }}
+                                </div>
+                            {% endif %}
                             <br>
                                 <div>
                                     <a href='{% url "users:password_change" %}' class="text-gray-800 transition-color duration-300 ease-in-out hover:text-orange-600">Изменить пароль?</a>
@@ -67,18 +86,13 @@
                         </div>
                     </div>
                 </form>
-                <form action="{% url 'users:logout' %}" method="post">
-                    {% csrf_token %}
-                
-                    <button class="py-1.5 px-3 m-1 text-center bg-orange-600 border rounded-md text-white  hover:bg-orange-700"
-                    type="submit">Выйти из аккаунта</button>
-                </form> 
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}
 
 
 {% block scripts %}
-    <script src="{% static 'scripts/upload_image.js' %}"></script>
+    <script src="{% static 'javascripts/image_uploader.js' %}"></script>
 {% endblock scripts %}

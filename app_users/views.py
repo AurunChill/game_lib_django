@@ -11,11 +11,11 @@ from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView
 
 # Project
-from app_users.forms import UserLoginForm, UserRegistrationForm, UserPasswordChangeForm
+import app_users.forms as forms
 
 
 class LoginView(FormView):
-    form_class = UserLoginForm
+    form_class = forms.UserLoginForm
     template_name = 'app_users/auth_login.html'
     success_url = reverse_lazy('games:catalog') # You need to define the URL to redirect after login
 
@@ -28,7 +28,7 @@ class LoginView(FormView):
 
 
 class RegistrationView(CreateView):
-    form_class = UserRegistrationForm
+    form_class = forms.UserRegistrationForm
     template_name = 'app_users/auth_registration.html'
     success_url = reverse_lazy('users:login')  # Adjust to the correct URL based on your URL configuration
 
@@ -40,7 +40,7 @@ class RegistrationView(CreateView):
 
 
 class LogoutView(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         auth.logout(request)
         return redirect(reverse('users:login'))
 
@@ -55,11 +55,26 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.username
+        if self.request.method == 'POST':
+            context['form'] = forms.UserInfoUpdateForm(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            context['form'] = forms.UserInfoUpdateForm(instance=self.object)
         return context 
-    
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = forms.UserInfoUpdateForm(request.POST, request.FILES, instance=self.object)
+        if form.is_valid():
+            form.save()
+            return redirect(self.get_success_url())
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
 
 class UserPasswordChangeView(PasswordChangeView):
-    form_class = UserPasswordChangeForm
+    form_class = forms.UserPasswordChangeForm
     template_name = 'app_users/password_change.html'
 
     def get_success_url(self):
