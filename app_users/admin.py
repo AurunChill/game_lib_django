@@ -10,7 +10,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ["username", 'show_avatar', "first_name", "last_name", "email",]
     search_fields = ["username", "first_name", "last_name", "email",]
     readonly_fields=['show_avatar_big']
-    fields = ('username', 'email', 'password', 'image', 'show_avatar_big')
+    fields = ('username', 'email', 'password', 'image', 'show_avatar_big', 'is_staff', 'user_permissions')
     save_on_top = True
 
     @admin.display(description='Аватар')

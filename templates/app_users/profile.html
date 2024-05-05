@@ -11,6 +11,11 @@
             <li class="mb-2"><a href="{% url 'users:logout' %}" class="text-gray-700 hover:text-gray-900">
                 Выйти из аккаунта
             </a></li>
+            {% if user.is_staff %}            
+                <li class="mb-2"><a href="{% url 'admin:index' %}" class="text-gray-700 hover:text-gray-900">
+                    Админ панель
+                </a></li>
+            {% endif %}
         </ul>
     </div>
     <div class="flex"> 
