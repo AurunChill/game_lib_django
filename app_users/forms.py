@@ -1,6 +1,7 @@
 from typing import Any
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.forms import (
     AuthenticationForm, UserCreationForm,
     PasswordChangeForm
@@ -9,18 +10,29 @@ from django.contrib.auth.forms import (
 UserModel = get_user_model()
 
 class UserLoginForm(AuthenticationForm):
-    def clean(self) -> dict[str, Any]:
-        super().clean()
-        username = self.cleaned_data.get('username')
+    username = forms.CharField(label='Username', max_length=100)
+
+    def clean(self) -> dict:
+        """
+        This customization ensures both username and email can be used to log in.
+        """
+        username_or_email = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        if username and password:
-            user = UserModel.objects.filter(email=username).first() or UserModel.objects.filter(username=username).first()
-            if user:
+
+        if username_or_email and password:
+            # Attempting to find user by email or username.
+            try:
+                # Using 'iexact' for case-insensitive matching.
+                user = UserModel.objects.filter(email__iexact=username_or_email).first() \
+                        or UserModel.objects.filter(username__iexact=username_or_email).first()
+                if not user:
+                    raise forms.ValidationError('User not found.', code='invalid_login')
                 self.user_cache = authenticate(self.request, username=user.username, password=password)
                 if self.user_cache is None:
-                    raise forms.ValidationError('Неверный пароль.', code='invalid_login')
-            else:
-                raise forms.ValidationError('Пользователь не найден.', code='invalid_login')
+                    raise forms.ValidationError('Invalid password.', code='invalid_login')
+            except ObjectDoesNotExist:
+                # This except block may be redundant due to logical flow but is kept for clarity.
+                raise forms.ValidationError('User not found.', code='invalid_login')
 
         return self.cleaned_data
 
