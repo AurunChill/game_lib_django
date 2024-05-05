@@ -26,13 +26,13 @@ class UserLoginForm(AuthenticationForm):
                 user = UserModel.objects.filter(email__iexact=username_or_email).first() \
                         or UserModel.objects.filter(username__iexact=username_or_email).first()
                 if not user:
-                    raise forms.ValidationError('User not found.', code='invalid_login')
+                    raise forms.ValidationError('Пользователь не найден', code='invalid_login')
                 self.user_cache = authenticate(self.request, username=user.username, password=password)
                 if self.user_cache is None:
-                    raise forms.ValidationError('Invalid password.', code='invalid_login')
+                    raise forms.ValidationError('Неверный пароль', code='invalid_login')
             except ObjectDoesNotExist:
                 # This except block may be redundant due to logical flow but is kept for clarity.
-                raise forms.ValidationError('User not found.', code='invalid_login')
+                raise forms.ValidationError('Пользователь не найден', code='invalid_login')
 
         return self.cleaned_data
 

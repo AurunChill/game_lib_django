@@ -18,14 +18,40 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+import django.contrib.auth.views as auth_views
+
+
+password_reset_patterns = [
+    path(
+        route='password_reset/', 
+        view=auth_views.PasswordResetView.as_view(template_name='app_users/password_reset/password_reset_form.html'), 
+        name='password_reset'
+        ),
+    path(
+        route='password_reset_done/', 
+        view=auth_views.PasswordResetDoneView.as_view(template_name='app_users/password_reset/password_reset_done.html'), 
+        name='password_reset_done'
+        ),
+    path(
+        route='password_reset_confirm/<uidb64>/<token>/', 
+        view=auth_views.PasswordResetConfirmView.as_view(template_name='app_users/password_reset/password_reset_confirm.html'), 
+        name='password_reset_confirm'
+        ),
+    path(
+        route='password_reset_complete/', 
+        view=auth_views.PasswordResetCompleteView.as_view(template_name='app_users/password_reset/password_reset_complete.html'), 
+        name='password_reset_complete'
+        ),
+]
 
 
 urlpatterns = [
     path('', include('app_main.urls')),
-    path('admin/', admin.site.urls, name='admin'),
+    path('admin/', admin.site.urls),
     path('', include('app_games.urls')),
-    path('', include('app_users.urls')),
-    path('', include('app_carts.urls'))
+    path('', include('app_carts.urls')),
+    path('accounts/', include('app_users.urls')), 
+    path('', include(password_reset_patterns)),
 ]
 
 if settings.DEBUG:

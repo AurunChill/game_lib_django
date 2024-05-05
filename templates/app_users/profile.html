@@ -7,15 +7,15 @@
     <div class="w-1/4 h-screen sticky top-0 p-4">
         <h2 class="text-lg font-semibold text-orange-600 mb-4">Действия</h2>
         <ul class="list-none">
-            <li class="mb-2"><a href="#" class="text-gray-700 hover:text-gray-900">Выложить игру</a></li>
-            <li class="mb-2"><a href="{% url 'users:logout' %}" class="text-gray-700 hover:text-gray-900">
-                Выйти из аккаунта
-            </a></li>
             {% if user.is_staff %}            
                 <li class="mb-2"><a href="{% url 'admin:index' %}" class="text-gray-700 hover:text-gray-900">
                     Админ панель
                 </a></li>
             {% endif %}
+            <li class="mb-2"><a href="#" class="text-gray-700 hover:text-gray-900">Выложить игру</a></li>
+            <li class="mb-2"><a href="{% url 'users:logout' %}" class="text-gray-700 hover:text-gray-900">
+                Выйти из аккаунта
+            </a></li>
         </ul>
     </div>
     <div class="flex"> 
