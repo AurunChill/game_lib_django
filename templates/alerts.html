@@ -3,12 +3,11 @@
 {% if messages %}
     <div id="alert-container" class="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
         {% for message in messages %}
-            <div class="alert-message min-w-12 bg-green-600 rounded-lg border-gray-300 border px-4 py-3 shadow-lg" role="alert">
-                <p class="text-white text-sm {{ message.tags }}">{{ message }}</p>
+            <div class="alert-message min-w-12 {% if message.tags == 'error' %} bg-red-600 {% else %} bg-green-600 {% endif %} rounded-lg border-gray-300 border px-4 py-3 shadow-lg" role="alert">
+                <p class="text-white text-sm">{{ message }}</p>
             </div>
         {% endfor %}
     </div>
 
     <script src="{% static 'javascripts/alerts/alert.js' %}"></script>
 {% endif %}
-

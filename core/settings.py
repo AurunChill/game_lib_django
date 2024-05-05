@@ -142,3 +142,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Default user model
 AUTH_USER_MODEL = 'app_users.UserModel'
+
+# Email
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = 'aurunchill@yandex.ru'
+EMAIL_HOST_PASSWORD = 'wygonehuvgwatxhl'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

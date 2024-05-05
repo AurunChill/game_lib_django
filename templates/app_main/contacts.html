@@ -2,19 +2,21 @@
 {% load static %}
 
 {% block content %}
-<div class="id="contact">
+<div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 text-center">
         <h1 class="text-3xl font-semibold text-gray-800 md:text-4xl">Контакты</h1>
         <p class="pt-6 pb-6 text-base max-w-2xl text-center m-auto ">
             Хотите с нами связаться? Выберите
-            один из предложенных ниже способов и мы будем рады показать, как мы можем преобразить ваш опыт пользования играми.
+            один из предложенных ниже способов и мы будем рады показать, как мы можем преобразить ваш опыт пользования
+            играми.
         </p>
     </div>
     <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 grid md:grid-cols-2 lg:grid-cols-2 gap-y-8 md:gap-x-8 md:gap-y-8 lg:gap-x-8 lg:gap-y-16">
         <div>
             <h2 class="text-lg font-bold text-orange-500">Свяжитесь с нами</h2>
-            <p class="max-w-sm mt-4 mb-4 ">Есть что сказать? Мы здесь, чтобы помочь. Заполните форму, отправьте электронное письмо или позвоните нам.</p>
+            <p class="max-w-sm mt-4 mb-4 ">Есть что сказать? Мы здесь, чтобы помочь. Заполните форму, отправьте
+                электронное письмо или позвоните нам.</p>
             <div class="flex items-center mt-8 space-x-2 text-dark-600 ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -43,24 +45,32 @@
             </div>
         </div>
         <div>
-            <form>
+            <form method='POST'>
+                {% csrf_token %}
                 <input type="checkbox" id="" class="hidden" style="display:none" name="botcheck">
                 <div class="mb-5">
-                    <input type="text" placeholder="Полное имя" autocomplete="false"
-                        class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100"
-                        name="name">
+                    <input id='name' name='name' type="text" placeholder="Полное имя" autocomplete="false"
+                        class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100">
+                    {% if form.name.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.name.errors.as_text }}</div>
+                    {% endif %}
                 </div>
                 <div class="mb-5">
-                    <label for="email_address" class="sr-only">Адрес электронной почты</label>
-                    <input id="email_address" type="email" placeholder="Адрес электронной почты" autocomplete="false"
-                        class="w-full px-4 py-3 border-2 placeholder:text-gray-800 focus:ring-4  border-gray-300 focus:border-gray-600 ring-gray-100"
-                        name="email">
+                    <label for="contact_email" class="sr-only">Адрес электронной почты</label>
+                    <input value='{% if user.email %}{{ user.email }}{% endif %}' id="contact_email"
+                        name='contact_email' type="email" placeholder="Ваша электоронная почта для связи"
+                        autocomplete="false"
+                        class="w-full px-4 py-3 border-2 placeholder:text-gray-800 focus:ring-4  border-gray-300 focus:border-gray-600 ring-gray-100">
+                    {% if form.contact_email.errors %}
+                    <div class="text-red-500 text-sm mt-1">Неверная почта: {{ form.contact_email.as_text }}</div>
+                    {% endif %}
                 </div>
                 <div class="mb-3">
-                    <textarea placeholder="Ваше сообщение"
-                        class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none  h-36 focus:ring-4  border-gray-300 focus:border-gray-600 ring-gray-100"
-                        name="message">
-                    </textarea>
+                    <textarea id='message' name='message' placeholder="Ваше сообщение"
+                        class="w-full px-4 py-3 border-2 placeholder:text-gray-800 rounded-md outline-none  h-36 focus:ring-4  border-gray-300 focus:border-gray-600 ring-gray-100"></textarea>
+                    {% if form.message.errors %}
+                    <div class="text-red-500 text-sm mt-1">{{ form.message.as_text }}</div>
+                    {% endif %}
                 </div>
                 <button type="submit"
                     class="w-full py-4 font-semibold text-white transition-colors bg-orange-600 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-offset-2 focus:ring focus:ring-gray-200 px-7">Отправить

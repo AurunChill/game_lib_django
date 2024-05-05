@@ -54,7 +54,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = self.object.username
+        context['title'] = self.request.user.username
         if self.request.method == 'POST':
             context['form'] = forms.UserInfoUpdateForm(self.request.POST, self.request.FILES, instance=self.object)
         else:
@@ -70,8 +70,9 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
+        messages.add_message(self.request, messages.INFO, 'Данные успешно изменены')
         return self.object.get_absolute_url()
-
+    
 
 class UserPasswordChangeView(PasswordChangeView):
     form_class = forms.UserPasswordChangeForm
