@@ -1,0 +1,14 @@
+{% load static %}
+
+{% if messages %}
+    <div id="alert-container" class="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+        {% for message in messages %}
+            <div class="alert-message min-w-12 bg-green-600 rounded-lg border-gray-300 border px-4 py-3 shadow-lg" role="alert">
+                <p class="text-white text-sm {{ message.tags }}">{{ message }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="{% static 'scripts/alerts/alert.js' %}"></script>
+{% endif %}
+

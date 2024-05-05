@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.generic import ListView
 from django.views import View
-
+    
 # Standard
 from decimal import Decimal
 import json
@@ -18,10 +18,10 @@ class CartViewList(ListView):
     context_object_name = 'cart_items'
 
     def get_queryset(self): 
-        queryset = super().get_queryset()
-        current_user = self.request.user
+        queryset = super().get_queryset() 
 
-        queryset.filter(user__username=current_user.username)
+        current_user = self.request.user
+        queryset = queryset.filter(user__username=current_user.username)
 
         return queryset
 

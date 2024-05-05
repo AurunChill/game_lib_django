@@ -1,6 +1,7 @@
 from django import template
 from django.utils.http import urlencode
 
+
 # Project
 from app_games.models import GameModel, WishListModel
 from app_users.models import UserModel

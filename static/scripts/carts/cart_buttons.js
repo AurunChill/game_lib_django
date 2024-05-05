@@ -23,7 +23,9 @@ function handle_btn_cart_click(user_id, game_id, is_authenticated) {
     }
 
     let button = document.querySelector('#cart_btn');
-    let is_adding = updateCartButtonText(button);
+    let in_cart_text = document.querySelector('.text_in_cart')
+
+    let is_adding = updateElementsText(button, in_cart_text);
 
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
@@ -44,16 +46,18 @@ const CartButtonOptions = {
  * @param {Element} button - The cart button element
  * @returns {boolean} - True if adding to cart, False if removing from cart
  */
-function updateCartButtonText(button) {
+function updateElementsText(button, label) {
     let is_adding = true;
 
     switch (button.innerText) {
         case CartButtonOptions.ADD_TO_CART:
             is_adding = true;
+            label.innerText = 'В корзине'
             button.innerText = CartButtonOptions.REMOVE_FROM_CART;
             break;
         case CartButtonOptions.REMOVE_FROM_CART:
             is_adding = false;
+            label.innerText = ''
             button.innerText = CartButtonOptions.ADD_TO_CART;
             break;
     }

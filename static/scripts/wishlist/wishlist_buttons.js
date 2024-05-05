@@ -11,12 +11,15 @@ const WishListButtonOptions = {
  */
 function handle_btn_wishlist_click(user_id, game_id, is_authenticated) {
     if (is_authenticated === 'False') {
-        window.location.href = '/login/';
+        window.location.href = '/login/'; 
         return;
     }
 
     let button = document.querySelector('#wishlist_btn');
-    let is_adding = updateWishListButtonText(button);
+    let in_wish_text = document.querySelector('.text_in_wishlist')
+    console.log(in_wish_text)
+
+    let is_adding = updateWishListButtonText(button, in_wish_text);
 
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
@@ -32,16 +35,18 @@ function handle_btn_wishlist_click(user_id, game_id, is_authenticated) {
  * @param {Element} button - The wishlist button element
  * @returns {boolean} - True if adding to wishlist, False if removing from wishlist
  */
-function updateWishListButtonText(button) {
+function updateWishListButtonText(button, label) {
     let is_adding = true;
 
     switch (button.innerText) {
         case WishListButtonOptions.ADD_TO_WISHLIST:
             is_adding = true;
+            label.innerText = 'В желаемых'
             button.innerText = WishListButtonOptions.REMOVE_FROM_WISHLIST;
             break;
         case WishListButtonOptions.REMOVE_FROM_WISHLIST:
             is_adding = false;
+            label.innerText = ''
             button.innerText = WishListButtonOptions.ADD_TO_WISHLIST;
             break;
     }

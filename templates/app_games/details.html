@@ -11,10 +11,11 @@
                     <img class="w-full h-full object-cover rounded-lg" src="{{ game.image.url }}" alt="Product Image">
                 </div>
                 <div class="flex -mx-2 mb-4">
-                    {% csrf_token %}    
+                    {% csrf_token %}
                     <div class="w-1/2 px-2">
-                        <button id="cart_btn" onclick="handle_btn_cart_click({{ user.id }}, {{game.pk}}, '{{ user.is_authenticated }}')"
-                         class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700">
+                        <button id="cart_btn"
+                            onclick="handle_btn_cart_click('{{ user.id }}', {{game.pk}}, '{{ user.is_authenticated }}')"
+                            class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700">
                             {% in_user_cart user.id game.pk as in_cart %}
                             {% if not in_cart %}Добавить в корзину{% else %}Убрать из корзины{% endif %}
                         </button>
@@ -22,8 +23,9 @@
                     {% csrf_token %}
                     <div class="w-1/2 px-2">
                         {% in_user_wishlist user.id game.pk as in_wishlist %}
-                        <button id='wishlist_btn' onclick="handle_btn_wishlist_click({{ user.id }}, {{ game.pk }}, '{{ user.is_authenticated }}')"  
-                        class="w-full mx-12 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-bold hover:bg-gray-300 whitespace-nowrap">
+                        <button id='wishlist_btn'
+                            onclick="handle_btn_wishlist_click('{{ user.id }}', {{ game.pk }}, '{{ user.is_authenticated }}')"
+                            class="w-full mx-12 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-bold hover:bg-gray-300 whitespace-nowrap">
                             {% if not in_wishlist %}В желаемое{% else %}Убрать из желаемого{% endif %}
                         </button>
                     </div>
@@ -53,13 +55,29 @@
                         <span class="text-gray-600">{{ game.discount|floatformat }}%</span>
                     </div>
                 </div>
+                <div class='mt-4 flex gap-4'>
+                    {% in_user_cart user.id game.pk as in_cart %}
+                    <span class="text_in_cart font-bold text-orange-600">
+                    {% if in_cart %}
+                            В корзине
+                    {% endif %}
+                    </span>
+
+                    {% in_user_wishlist user.id game.pk as in_wishlist %}
+                    <span class="text_in_wishlist font-bold text-orange-600">
+                    {% if in_wishlist %}
+                            В желаемых
+                    {% endif %}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
     <div class="flex gap-2 justify-end">
         <a onclick='history.back()'
             class="me-4 inline-flex items-cente px-3 py-1.5 rounded-md text-gray-500 transition-colors duration-300 ease-in-out hover:text-orange-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                class="h-6 w-6">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18">
                 </path>
             </svg>
@@ -70,6 +88,6 @@
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static 'scripts/carts/cart_buttons.js' %}"></script>
-    <script src="{% static 'scripts/wishlist/wishlist_buttons.js' %}"></script>
+<script src="{% static 'scripts/carts/cart_buttons.js' %}"></script>
+<script src="{% static 'scripts/wishlist/wishlist_buttons.js' %}"></script>
 {% endblock scripts %}
