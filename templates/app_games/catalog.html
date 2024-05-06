@@ -24,6 +24,14 @@
             <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="mine" {% if filter == 'mine' %}selected{% endif %}>Мои игры</option>
         </select>
         {% endwith %}
+        {% with request.GET.order as order %}
+            <select id="order" name="order"
+            class="z-30 h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider bg-white">
+                <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="new" {% if not order %}selected{% endif %}>С начала новые</option>
+                <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="old" {% if order == 'old' %}selected{% endif %}>С начала старые</option>
+                <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="popular" {% if order == 'popular' %}selected{% endif %}>Самые желаемые</option>
+            </select>
+        {% endwith %}
 
         <div class="flex flex-col md:flex-row justify-end flex-grow">
             <div class='p-2 rounded-md bg-orange-500 flex mr-4'>

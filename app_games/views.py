@@ -3,6 +3,7 @@ from django.views import View
 from django.db.models import F, ExpressionWrapper, DecimalField
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 # Project
 from app_games.models import GameModel, WishListModel
@@ -23,6 +24,12 @@ class SearchFilters(Enum):
     MINE = 'mine'
 
 
+class OrderFilters(Enum):
+    NEW = 'new'
+    OLD = 'old'
+    POPULAR = 'popular'
+
+
 class CatalogView(ListView):
     """
     Display a catalog of games with optional filters and search.
@@ -38,6 +45,7 @@ class CatalogView(ListView):
         queryset = super().get_queryset()
         queryset = self.apply_search(queryset)
         queryset = self.apply_filters(queryset)
+        queryset = self.apply_order(queryset)
         return self.paginate_queryset(queryset)
 
     def apply_search(self, queryset):
@@ -46,6 +54,22 @@ class CatalogView(ListView):
         """
         query = self.request.GET.get('search')
         return q_search(query) if query else queryset
+    
+    def apply_order(self, queryset):
+        """
+        Apply order query to the queryset if order parameter is provided.
+        """
+        order_filter = self.request.GET.get('order', OrderFilters.NEW.value).lower()
+        match order_filter:
+            case OrderFilters.NEW.value:
+                return queryset.order_by('-release_date')
+            case OrderFilters.OLD.value:
+                return queryset.order_by('release_date')
+            case OrderFilters.POPULAR.value:
+                return queryset.annotate(wishlist_count=Count('wishlist_game')).order_by('-wishlist_count')
+            case _:
+                return queryset
+
 
     def apply_filters(self, queryset):
         """
@@ -125,11 +149,14 @@ class GameDetailView(DetailView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author__username=self.kwargs.get('author'))
-        return queryset
+        return queryset 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        total_wishlists_count = len(WishListModel.objects.filter(game=self.object))
+
         context['title'] = self.object.title
+        context['total_wishlists_count'] = total_wishlists_count
         return context
     
 

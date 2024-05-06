@@ -55,6 +55,10 @@
                         <span class="text-gray-600">{{ game.discount|floatformat }}%</span>
                     </div>
                 </div>
+                <div class='mt-2'>
+                    <span class="font-bold text-gray-700">Добавили в желаемое:</span>
+                    <span class="text-gray-600 text-sm mt-2">{{ total_wishlists_count }}</span>
+                </div>
                 <div class='mt-4 flex gap-4'>
                     {% in_user_cart user.id game.pk as in_cart %}
                     <span class="text_in_cart font-bold text-orange-600">
