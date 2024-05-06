@@ -11,7 +11,8 @@ const WishListButtonOptions = {
  */
 function handle_btn_wishlist_click(user_id, game_id, is_authenticated) {
     if (is_authenticated === 'False') {
-        window.location.href = '/login/'; 
+        console.log('here')
+        window.location.href = '/accounts/login/'; 
         return;
     }
 

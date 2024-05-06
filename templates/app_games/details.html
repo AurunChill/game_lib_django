@@ -17,7 +17,7 @@
                     <button id="cart_btn"
                         onclick="handle_btn_cart_click('{{ user.id }}', {{ game.pk }}, '{{ user.is_authenticated }}')"
                         class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700">
-                        {% if not in_cart %}Добавить в корзину{% else %}Убрать из корзины{% endif %}
+                        {% if not in_cart %}В корзину{% else %}Убрать из корзины{% endif %}
                     </button>
                 </div>
                 {% csrf_token %}
@@ -81,7 +81,7 @@
         </div>
         {% endif %}
         <div class="flex gap-2 justify-end">
-            <a href="{% url 'games:catalog' %}"
+            <a onclick='goBackOrRedirectToCatalog()'
                 class="mt-2 inline-flex items-center rounded-md text-gray-500 transition-colors duration-300 ease-in-out hover:text-orange-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                     class="h-6 w-6">
@@ -97,6 +97,22 @@
 {% endblock content %}
 
 {% block scripts %}
-<script src="{% static 'javascripts/carts/cart_buttons.js' %}"></script>
-<script src="{% static 'javascripts/wishlist/wishlist_buttons.js' %}"></script>
+<script src="{% static 'javascripts/carts/cart_button.js' %}"></script>
+<script src="{% static 'javascripts/wishlist/wishlist_button.js' %}"></script>
+
+<script>
+    function goBackOrRedirectToCatalog() {
+        const previousUrl = document.referrer;
+        const gamesCatalogUrl = '/games/';
+    
+        // Check if the previous URL contains the games catalog URL
+        if (previousUrl.includes(gamesCatalogUrl)) {
+            // Go back to the previous page
+            window.history.back();
+        } else {
+            // Redirect to the games catalog page
+            window.location.href = '/games/';
+        }
+    }
+</script>
 {% endblock scripts %}

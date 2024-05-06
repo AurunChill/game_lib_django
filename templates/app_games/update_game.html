@@ -17,7 +17,7 @@
                             <img id="preview" class="relative object-cover rounded-xl" src="{{ game.image.url }}">
                         </div>
 
-                        <div class="w-[400px] self-center relative border-2 border-gray-300 border-dashed rounded-lg p-6"
+                        <div class="w-auto self-center relative border-2 border-gray-300 border-dashed rounded-lg p-6"
                             id="dropzone">
                             <div class="text-center">
                                 <img class="mx-auto h-12 w-12"
@@ -76,7 +76,7 @@
                                 <div class="text-red-500 text-sm mt-1">{{ form.price.errors.as_text }}</div>
                                 {% endif %}
                             </div>
-                            <div class="w-1/6">
+                            <div class="w-2/6">
                                 <label for='discount' class="text-gray-600">Скидка (%)</label>
                                 <input id="discount" name="discount"
                                     class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"

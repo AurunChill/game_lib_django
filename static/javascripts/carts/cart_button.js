@@ -18,7 +18,7 @@ function remove_cart_item_list(item_id, user_id, game_id) {
  */
 function handle_btn_cart_click(user_id, game_id, is_authenticated) {
     if (is_authenticated === 'False') {
-        window.location.href = '/login/';
+        window.location.href = '/accounts/login/';
         return;
     }
 
@@ -38,7 +38,7 @@ function handle_btn_cart_click(user_id, game_id, is_authenticated) {
 
 const CartButtonOptions = {
     REMOVE_FROM_CART: 'Убрать из корзины',
-    ADD_TO_CART: 'Добавить в корзину'
+    ADD_TO_CART: 'В корзину'
 }
 
 /**

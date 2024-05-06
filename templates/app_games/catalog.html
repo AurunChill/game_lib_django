@@ -4,18 +4,18 @@
 
 {% block content %}
     <!-- Search -->
-    <form class="flex flex-col md:flex-row gap-3 ms-4 mt-4" method="GET">
-        <div class="flex">
+    <form class="flex flex-col md:flex-row md:w-full gap-3 mt-4" method="GET">
+        <div class="flex p-2 mr-4">
             {% with search=request.GET.search %}
                 <input id='search' name='search' type="text" placeholder="Поиск игры/автора" value="{% if search %}{{ search }}{% endif %}"
-                    class="md:w-80 px-3 h-10 border-t border-b border-l rounded-sm focus:outline-none focus:border-orange-500"
+                    class="w-full md:w-80 px-3 h-10 border-t border-b border-l rounded-sm focus:outline-none focus:border-orange-500"
                     >
                 <button type="submit" class="bg-orange-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Поиск</button>
             {% endwith %}
         </div>
         {% with request.GET.pricing_type as filter %}        
         <select id="pricing_type" name="pricing_type"
-        class="z-30 h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider bg-white">
+        class="ml-2 mt-2 h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded tracking-wider bg-white p-2 flex mr-4">
             <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="all" {% if not filter %}selected{% endif %}>Все</option>
             <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="discount" {% if filter == 'discount' %}selected{% endif %}>Со скидкой</option>
             <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="free" {% if filter == 'free' %}selected{% endif %}>Бесплатные</option>
@@ -26,20 +26,17 @@
         {% endwith %}
         {% with request.GET.order as order %}
             <select id="order" name="order"
-            class="z-30 h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider bg-white">
+            class="ml-2 mt-2 h-10 border-2 border-orange-500 focus:outline-none focus:border-orange-500 text-orange-500 rounded tracking-wider bg-white p-2 flex mr-4">
                 <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="new" {% if not order %}selected{% endif %}>С начала новые</option>
                 <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="old" {% if order == 'old' %}selected{% endif %}>С начала старые</option>
                 <option class="text-gray-800 hover:bg-orange-600 hover:text-white" value="popular" {% if order == 'popular' %}selected{% endif %}>Самые желаемые</option>
             </select>
         {% endwith %}
 
-        <div class="flex flex-col md:flex-row justify-end flex-grow">
+        <a href="{% url 'carts:cart' %}" class="ml-2 mt-2 h-10 flex flex-col md:flex-row justify-end flex-grow">
             <div class='p-2 rounded-md bg-orange-500 flex mr-4'>
-                <a href="{% url 'carts:cart' %}" class="text-white mx-4">
-                    Корзина
-                </a>
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
-                class='w-6 h-6 text-white'>
+                <span class="text-white mx-4">Корзина</span>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" class='w-6 h-6 text-white'>
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -48,7 +45,7 @@
                     </g>
                 </svg>
             </div>
-        </div>
+        </a>
     </form>
 
     <!-- Game list -->

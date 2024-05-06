@@ -5,82 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="icon" type="image/ico" href="{% static 'images/logo.ico' %}" />
     <title>{{ title }}</title>
 </head>
 
-<body class="bg-white "> 
+<body class="bg-white ">
     <div class="h-screen">
-        <!-- component -->
-        <header class="">
-            <nav x-data="{ open: false }" class="flex h-auto w-auto bg-gray-200 shadow-lg justify-between md:h-16">
-                <div class="flex w-full justify-stre">
-                    <div :class="open ? 'hidden':'flex'" class="flex px-6 w-1/2 items-center font-semibold
-                md:w-1/5 md:px-1 md:flex md:items-center md:justify-center"
-                        x-transition:enter="transition ease-out duration-300">
-                        <p class="p-5 bg-orange-600 rounded-sm ms-[-100px] text-white">Игротека GameLib</p>
+        <header class="h-16 md:h-24">
+            <nav class="relative flex w-full h-full bg-gray-200 shadow-lg justify-between sm:h-18">
+                <div class="flex w-full justify-bet">
+                    <div class="flex items-center justify-center font-semibold bg-orange-600 px-8">
+                        <p class="rounded-sm text-white">Игротека GameLib</p>
                     </div>
-    
-                    <div x-show="open" x-transition:enter="transition ease-in-out duration-300" class="flex flex-col w-full h-auto
-                md:hidden">
+
+                    <div class="ml-auto mr-4 mt-4 md:hidden text-gray-600 relative overflow-hidden" id="burgerMenu" onclick="createRipple(event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
                     </div>
-                    <div class="hidden w-3/5 items-center justify-evenly font-semibold md:flex">
-                        <a class="{% if request.resolver_match.url_name == 'home' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:home' %}">Домашняя</a>
-                        <a class="{% if request.resolver_match.url_name == 'about' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:about' %}">О нас</a>
-                        <a class="{% if request.resolver_match.url_name == 'catalog' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'games:catalog' %}">Игры</a>
-                        <a class="{% if request.resolver_match.url_name == 'contacts' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'main:contacts' %}">Контакты</a>
+
+                    <div class="hidden md:flex w-3/5 items-center justify-evenly font-semibold">
+                        {% with request.resolver_match.url_name as url_name %}
+                        <a class="{% if url_name == 'home' %}nav_choosen{% else %}header_link{% endif %} custom-underline"
+                            href="{% url 'main:home' %}">Домашняя</a>
+                        <a class="{% if url_name == 'about' %}nav_choosen{% else %}header_link{% endif %} custom-underline text-center"
+                            href="{% url 'main:about' %}">О нас</a>
+                        <a class="{% if url_name == 'catalog' %}nav_choosen{% else %}header_link{% endif %} custom-underline"
+                            href="{% url 'games:catalog' %}">Игры</a>
+                        <a class="{% if url_name == 'contacts' %}nav_choosen{% else %}header_link{% endif %} custom-underline"
+                            href="{% url 'main:contacts' %}">Контакты</a>
+                        {% endwith %}
                     </div>
-    
+       
+
                     <!-- Auth and profile block -->
-                    <div class="hidden w-1/5 items-center justify-evenly font-semibold
-                md:flex">
+                    <div class="hidden md:flex items-center justify-evenly font-semibold ml-auto">
                         {% if not user.username %}
-                            <button class=''><a class="header_link {% if request.resolver_match.url_name == 'login' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'users:login' %}">Войти</a></button>
-                            <span>|</span>
-                            <button class=''><a class="header_link {% if request.resolver_match.url_name == 'registration' %}nav_choosen{% else %}header_link{% endif %}" href="{% url 'users:registration' %}">Регистрация</a></button>
+                        <button class=''><a
+                                class="custom-underline header_link {% if request.resolver_match.url_name == 'login' %}nav_choosen{% else %}header_link{% endif %}"
+                                href="{% url 'users:login' %}">Войти</a></button>
+                        <span>|</span>
+                        <button class=''><a
+                                class="custom-underline header_link {% if request.resolver_match.url_name == 'registration' %}nav_choosen{% else %}header_link{% endif %}"
+                                href="{% url 'users:registration' %}">Регистрация</a></button>
                         {% else %}
-                            <button class=''><a class="header_link {% if request.resolver_match.url_name == 'profile' %}nav_choosen{% else %}header_link{% endif %}" href='{{ user.get_absolute_url }}'>Профиль</a></button>
-                            <div class="h-8 w-8 overflow-hidden rounded-md">
+                        <button class=''><a
+                                class="custom-underline header_link {% if request.resolver_match.url_name == 'profile' %}nav_choosen{% else %}header_link{% endif %}"
+                                href='{{ user.get_absolute_url }}'>Профиль</a></button>
+                        <div class="h-12 w-12 overflow-hidden rounded-md mr-4">
                             {% if not user.image %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        class="p-[6px] text-white bg-gray-500 stroke-current">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                    </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                class="p-[6px] text-white bg-gray-500 stroke-current">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
                             {% else %}
-                                    <img class="w-full h-full object-cover" src='{{ user.image.url }}'/>
+                            <img class="w-full h-full object-cover " src='{{ user.image.url }}' />
                             {% endif %}
                         </div>
                         {% endif %}
                     </div>
-    
-                    <button class="text-gray-500 w-10 h-10 relative focus:outline-none bg-white
-                                md:hidden
-                              " @click="open = !open">
-                        <span class="sr-only">Open main menu</span>
-                        <div class="block w-5 absolute left-1/2 top-1/2   transform  -translate-x-1/2 -translate-y-1/2">
-                            <span aria-hidden="true"
-                                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                                :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-                            <span aria-hidden="true"
-                                class="block absolute  h-0.5 w-5 bg-current   transform transition duration-500 ease-in-out"
-                                :class="{'opacity-0': open } "></span>
-                            <span aria-hidden="true"
-                                class="block absolute  h-0.5 w-5 bg-current transform  transition duration-500 ease-in-out"
-                                :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
-                        </div>
-                    </button>
                 </div>
             </nav>
         </header>
-    
-    
+                   
+        <div class="md:hidden flex justify-end relative z-10">
+            <div class="max-w-sm rounded-md z-10 bg-gray-300 absolute right-0 text-gray-800" id="dropdownMenu">
+                {% with request.resolver_match.url_name as url_name %}
+                <a class="{% if url_name == 'home' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'main:home' %}">Домашняя</a>
+                <hr class="mx-2 border-gray-400">
+                <a class="{% if url_name == 'about' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'main:about' %}">О нас</a>
+                <hr class="mx-2 border-gray-400">
+                <a class="{% if url_name == 'catalog' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'games:catalog' %}">Игры</a>
+                <hr class="mx-2 border-gray-400">
+                <a class="{% if url_name == 'contacts' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'main:contacts' %}">Контакты</a>
+                {% if not user.username %}
+                    <hr class="mx-2 border-gray-400">
+                    <a class="{% if url_name == 'login' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'users:login' %}">Войти</a>
+                    <hr class="mx-2 border-gray-400">
+                    <a class="{% if url_name == 'registration' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'users:registration' %}">Регистрация</a>
+                {% else %}
+                    <hr class="mx-2 border-gray-400">
+                    <a class="{% if url_name == 'profile' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{{ user.get_absolute_url }}">Профиль</a>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
         <main class="mb-auto">
-        {% include "alerts.html" %}
+            {% include "alerts.html" %}
             {% block content %}
-    
+
             {% endblock content %}
         </main>
-    
+
         <footer class="bg-gray-500 sticky top-[100vh]">
             <div class="container p-4 mx-auto">
                 <div class="items-center sm:flex-row sm:justify-between">
@@ -90,8 +108,44 @@
         </footer>
     </div>
 
+    <script>
+        // Toggle dropdown menu on burger menu click
+        const burgerMenu = document.getElementById('burgerMenu');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        dropdownMenu.classList.add('hidden');
+
+        burgerMenu.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (event) => {
+            const isOutsideDropdown = !dropdownMenu.contains(event.target);
+            const isNotBurgerMenu = event.target !== burgerMenu;
+            const doesNotHaveRippleClass = !event.target.classList.contains('ripple');
+            const isNotSVG = event.target.tagName.toLowerCase() !== 'svg';
+        
+            console.log(event.target)
+            if (isOutsideDropdown && isNotBurgerMenu && doesNotHaveRippleClass && isNotSVG) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        function createRipple(event) {
+           const button = event.currentTarget;
+           const circle = document.createElement("span");
+           const diameter = Math.max(button.clientWidth, button.clientHeight);
+           const radius = diameter / 2;
+           circle.style.width = circle.style.height = `${diameter}px`;
+           circle.style.left = `${event.clientX - (button.offsetLeft + radius)}px`;
+           circle.style.top = `${event.clientY - (button.offsetTop + radius)}px`;
+           circle.classList.add('ripple');
+           button.appendChild(circle);
+           setTimeout(() => circle.remove(), 600); // Adjust to match the animation duration!
+       }
+    </script>
     {% block scripts %}
-    
+
     {% endblock scripts %}
 </body>
 

@@ -7,78 +7,74 @@
         <h1 class="text-3xl font-semibold text-gray-800 md:text-4xl">Корзина</h1>
         <div class="flex flex-col md:flex-row gap-4 mt-4">
             <div class="md:w-3/4">
-                <div class="bg-white rounded-lg shadow-md p-6 mb-4">
-                    <table class="w-full">
-                        <thead>
-                            <tr>
-                                <th class="py-2 px-4 text-left font-semibold w-1/4">Игра</th>
-                                <th class="py-2 px-4 text-left font-semibold w-1/4">Цена</th>
-                                <th class="py-2 px-4 text-left font-semibold w-1/4">Скидка</th>
-                                <th class="py-2 px-4 text-left font-semibold w-1/4">Итого</th>
-                                <th class="py-2 px-4 text-left font-semibold"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {% csrf_token %}
-                        {% for item in cart_items %}
-                            <tr class='item_{{item.id}}'>
-                                <td class="py-4 px-4 w-1/4">
-                                    <div class="flex items-center">
-                                        <img class="h-16 w-16 mr-4 rounded-md" src="{{ item.game.image.url }}"
-                                            alt="Product image">
-                                        <a href='{{ item.game.get_absolute_url }}' class="font-semibold transition-colors duration-300 ease-in-out hover:text-orange-600">
-                                        {{ item.game.title }}</a>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-4 w-1/4">{{ item.game.price|floatformat }}₽</td>
-                                <td class="py-4 px-4 w-1/4">{{ item.game.discount|floatformat }}%</td>
-                                <td class="py-4 px-4 w-1/4">{{ item.game.total_price|floatformat }}₽</td>
-                                <td class=''>
-                                    <div onclick='remove_cart_item_list({{item.id}}, {{user.id}}, {{item.game.id}})' class='rm_from_cart my-5 bg-orange-600 rounded-md hover:bg-orange-700'>
-                                        <svg class="text-white"
-                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                            <g id="SVGRepo_iconCarrier"> 
-                                                <path d="M6 12L18 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> 
-                                            </g>
-                                        </svg>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- More product rows -->
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="overflow-x-auto">
+                    <div class="bg-white rounded-lg shadow-md p-2 md:p-6 mb-4 min-w-[320px]">
+                        <table class="w-full">
+                            <thead class="hidden md:table-header-group">
+                                <tr class='text-xs md:text-md lg:text-lg'>
+                                    <th class="py-2 px-2 lg:px-4 text-left font-semibold">Игра</th>
+                                    <th class="py-2 px-2 lg:px-4 text-left font-semibold">Цена</th>
+                                    <th class="py-2 px-2 lg:px-4 text-left font-semibold">Скидка</th>
+                                    <th class="py-2 px-2 lg:px-4 text-left font-semibold">Итого</th>
+                                    <th class="py-2 px-2 lg:px-4 text-left font-semibold"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="block md:table-row-group">
+                            {% csrf_token %}
+                            {% for item in cart_items %}
+                                <tr class='item_{{item.id}} block md:table-row text-xs md:text-md lg:text-lg mb-4 md:mb-0 md:bg-transparent rounded-lg md:rounded-none'>
+                                    <td class="py-2 px-2 lg:px-4 w-full md:w-auto">
+                                        <div class="flex items-center mb-2 md:mb-0">
+                                            <img class="hidden md:table-cell h-16 w-16 mr-4 rounded-md" src="{{ item.game.image.url }}" alt="Product image">
+                                            <a href='{{ item.game.get_absolute_url }}' class="font-semibold transition-colors duration-300 ease-in-out hover:text-orange-600">
+                                            {{ item.game.title }}</a>
+                                        </div>
+                                    </td>
+                                    <td class="py-2 px-2 lg:px-4 w-full md:w-auto"><span class="md:hidden font-semibold">Цена: </span>{{ item.game.price|floatformat }}₽</td>
+                                    <td class="py-2 px-2 lg:px-4 w-full md:w-auto"><span class="md:hidden font-semibold">Скидка: </span>{{ item.game.discount|floatformat }}%</td>
+                                    <td class="py-2 px-2 lg:px-4 w-full md:w-auto"><span class="md:hidden font-semibold">Итого: </span>{{ item.game.total_price|floatformat }}₽</td>
+                                    <td class='w-full md:w-auto'>
+                                        <div class="flex justify-end md:justify-center">
+                                            <div onclick='remove_cart_item_list({{item.id}}, {{user.id}}, {{item.game.id}})' class='h-8 w-8 rm_from_cart my-2 md:my-5 bg-orange-600 rounded-md hover:bg-orange-700'>
+                                                <svg class="text-white h-8 w-8 mx-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6 12L18 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- More product rows -->
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="md:w-1/4">
-                <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="bg-white rounded-lg shadow-md p-2">
                     <h2 class="text-lg font-semibold mb-4">Итого</h2>
-                    <div class="flex justify-between mb-2">
-                        <span>Стоимость</span>
-                        <span>{{ games_price|floatformat }}₽</span>
+                    <div class="mb-2">
+                        <p>Стоимость</p>
+                        <p>{{ games_price|floatformat }}₽</p>
                     </div>
-                    <div class="flex justify-between mb-2">
-                        <span>Процент площадки (1%)</span>
-                        <span>{{ percent_price|floatformat }}₽</span>
+                    <div class="mb-2">
+                        <p>Процент площадки (1%)</p>
+                        <p>{{ percent_price|floatformat }}₽</p>
                     </div>
                     <hr class="my-2">
-                    <div class="flex justify-between mb-2">
-                        <span class="font-semibold">Всего</span>
-                        <span class="font-semibold">{{ total_price|floatformat }}₽</span>
+                    <div class="mb-2">
+                        <p class="font-semibold">Всего</p>
+                        <p class="font-semibold">{{ total_price|floatformat }}₽</p>
                     </div>
                     <button class="bg-orange-500 text-white py-2 px-4 rounded-lg mt-4 w-full">Оплата</button>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
 {% endblock content %}
 
 {% block scripts %}
-    <script src="{% static 'javascripts/carts/cart_buttons.js' %}"></script>
+    <script src="{% static 'javascripts/carts/cart_button.js' %}"></script>
 {% endblock scripts %}
 
