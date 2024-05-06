@@ -3,90 +3,95 @@
 {% load game_tags %}
 
 {% block content %}
-<div class="bg-gray-100 py-8">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row -mx-4">
-            <div class="md:flex-1 px-4">
-                <div class="h-[460px] rounded-lg bg-gray-300 mb-4">
-                    <img class="w-full h-full object-cover rounded-lg" src="{{ game.image.url }}" alt="Product Image">
-                </div>
-                <div class="flex -mx-2 mb-4">
-                    {% csrf_token %}
-                    <div class="w-1/2 px-2">
-                        <button id="cart_btn"
-                            onclick="handle_btn_cart_click('{{ user.id }}', {{game.pk}}, '{{ user.is_authenticated }}')"
-                            class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700">
-                            {% in_user_cart user.id game.pk as in_cart %}
-                            {% if not in_cart %}Добавить в корзину{% else %}Убрать из корзины{% endif %}
-                        </button>
-                    </div>
-                    {% csrf_token %}
-                    <div class="w-1/2 px-2">
-                        {% in_user_wishlist user.id game.pk as in_wishlist %}
-                        <button id='wishlist_btn'
-                            onclick="handle_btn_wishlist_click('{{ user.id }}', {{ game.pk }}, '{{ user.is_authenticated }}')"
-                            class="w-full mx-12 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-bold hover:bg-gray-300 whitespace-nowrap">
-                            {% if not in_wishlist %}В желаемое{% else %}Убрать из желаемого{% endif %}
-                        </button>
-                    </div>
-                </div>
+<div class="p-4 sm:p-6 lg:p-8">
+    <div class='flex flex-col w-full sm:flex-col md:flex-col lg:flex-row '>
+        <div class="px-4 sm:w-full md:w-full lg:w-1/2 inline">
+            <div class="self-center rounded-lg bg-gray-300 mb-4">
+                <img class="w-full object-cover rounded-lg" src="{{ game.image.url }}" alt="Product Image">
             </div>
-            <div class="md:flex-1 px-4">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ game.title }}</h2>
-                <div>
-                    <span class="font-bold text-gray-700">Описание:</span>
-                    <p class="text-gray-600 text-sm mt-2">{{ game.description }}</p>
-                </div>
-                <div class='mt-2'>
-                    <span class="font-bold text-gray-700">Автор:</span>
-                    <p class="text-gray-600 text-sm mt-2">{{ game.author.username }}</p>
-                </div>
-                <div class='mt-2'>
-                    <span class="font-bold text-gray-700">Дата выхода:</span>
-                    <p class="text-gray-600 text-sm mt-2">{{ game.release_date }}</p>
-                </div>
-                <div class="flex mt-4">
-                    <div class="mr-4">
-                        <span class="font-bold text-gray-700">Цена:</span>
-                        <span class="text-gray-600">{{ game.total_price|floatformat:2 }}₽</span>
-                    </div>
-                    <div>
-                        <span class="font-bold text-gray-700">Скидка:</span>
-                        <span class="text-gray-600">{{ game.discount|floatformat }}%</span>
-                    </div>
-                </div>
-                <div class='mt-2'>
-                    <span class="font-bold text-gray-700">Добавили в желаемое:</span>
-                    <span class="text-gray-600 text-sm mt-2">{{ total_wishlists_count }}</span>
-                </div>
-                <div class='mt-4 flex gap-4'>
+            <div class="grid grid-cols-2 gap-2 mb-4">
+                {% csrf_token %}
+                <div class="mb-2 md:mb-0">
                     {% in_user_cart user.id game.pk as in_cart %}
-                    <span class="text_in_cart font-bold text-gray-800">
-                    {% if in_cart %}
-                            В корзине
-                    {% endif %}
-                    </span>
-
                     {% in_user_wishlist user.id game.pk as in_wishlist %}
-                    <span class="text_in_wishlist font-bold text-gray-800">
-                    {% if in_wishlist %}
-                            В желаемых
-                    {% endif %}
-                    </span>
+                    <button id="cart_btn"
+                        onclick="handle_btn_cart_click('{{ user.id }}', {{ game.pk }}, '{{ user.is_authenticated }}')"
+                        class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700">
+                        {% if not in_cart %}Добавить в корзину{% else %}Убрать из корзины{% endif %}
+                    </button>
+                </div>
+                {% csrf_token %}
+                <div>
+                    <button id="wishlist_btn"
+                        onclick="handle_btn_wishlist_click('{{ user.id }}', {{ game.pk }}, '{{ user.is_authenticated }}')"
+                        class="w-full bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-bold hover:bg-gray-300">
+                        {% if not in_wishlist %}В желаемое{% else %}Убрать из желаемого{% endif %}
+                    </button>
                 </div>
             </div>
         </div>
+        <div class="px-4 sm:w-full md:w-full lg:w-1/2 inline">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ game.title }}</h2>
+            <div class="mb-4">
+                <span class="font-bold text-gray-700">Описание:</span>
+                <p class="text-gray-600 text-sm mt-2 leading-7 whitespace-pre-line">{{ game.description }}</p>
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-gray-700">Автор:</span>
+                <p class="text-gray-600 text-sm mt-2">{{ game.author.username }}</p>
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-gray-700">Дата выхода:</span>
+                <p class="text-gray-600 text-sm mt-2">{{ game.release_date }}</p>
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-gray-700">Цена:</span>
+                <span class="text-gray-600">{{ game.total_price|floatformat:2 }}₽</span>
+                <span class="font-bold text-gray-700 md:ml-4">Скидка:</span>
+                <span class="text-gray-600 md:ml-1">{{ game.discount|floatformat }}%</span>
+            </div>
+            <div class="mb-4">
+                <span class="font-bold text-gray-700">Добавили в желаемое:</span>
+                <span class="text-gray-600 text-sm mt-2">{{ total_wishlists_count }}</span>
+            </div>
+            <p class="text_in_cart font-bold text-gray-800 underline">
+                {% if in_cart %}
+                В корзине
+                {% endif %}
+            </p>
+            <p class="mt-4 text_in_wishlist font-bold text-gray-800 underline">
+                {% if in_wishlist %}
+                В желаемых
+                {% endif %}
+            </p>
+        </div>
     </div>
-    <div class="flex gap-2 justify-end">
-        <a onclick='history.back()'
-            class="me-4 inline-flex items-cente px-3 py-1.5 rounded-md text-gray-500 transition-colors duration-300 ease-in-out hover:text-orange-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                class="h-6 w-6">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18">
-                </path>
-            </svg>
-            <span class="ml-1 font-bold text-lg">Вернуться в каталог</span>
-        </a>
+
+    <div class="mt-4">
+        {% if game.author.username == user.username %}
+        <div class="flex gap-2 justify-end">
+            <a href='{% url "games:game_update" game_slug=game.slug game_id=game.id %}'
+                class="text-gray-500 ml-1 font-bold text-lg  transition-colors duration-300 ease-in-out hover:text-orange-600">
+                Изменить данные игры</a>
+        </div>
+        <div class="flex gap-2 justify-end">
+            <a href='{% url "games:game_delete" game_slug=game.slug game_id=game.id %}'
+                class="mt-2 text-gray-500 ml-1 font-bold text-lg  transition-colors duration-300 ease-in-out hover:text-orange-600">
+                Удалить игру</a>
+        </div>
+        {% endif %}
+        <div class="flex gap-2 justify-end">
+            <a href="{% url 'games:catalog' %}"
+                class="mt-2 inline-flex items-center rounded-md text-gray-500 transition-colors duration-300 ease-in-out hover:text-orange-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="h-6 w-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 16l-4-4m0 0l4-4m-4 4h18">
+                    </path>
+                </svg>
+                <span class="ml-1 font-bold text-lg cursor-pointer">Вернуться в каталог</span>
+            </a>
+        </div>
     </div>
 </div>
 {% endblock content %}

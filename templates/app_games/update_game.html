@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="flex justify-center">
+    <!-- Main content -->
+    <div class="flex flex-col flex-1 mt-4">
+        <div class="flex justify-center px-8">
+            <form class="max-w-2xl" method='POST' enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="flex flex-wrap border shadow rounded-lg p-3">
+                    <h2 class="text-xl text-orange-600 pb-2">Обновление информации о игре</h2>
+                    <div class="flex flex-col gap-2 w-full border-gray-400">
+
+                        <label class="text-gray-600">Обложка</label>
+                        <div class="relative h-64 w-64 my-2 self-center overflow-hidden">
+                            <img id="preview" class="relative object-cover rounded-xl" src="{{ game.image.url }}">
+                        </div>
+
+                        <div class="w-[400px] self-center relative border-2 border-gray-300 border-dashed rounded-lg p-6"
+                            id="dropzone">
+                            <div class="text-center">
+                                <img class="mx-auto h-12 w-12"
+                                    src="https://www.svgrepo.com/show/357902/image-upload.svg" alt="">
+                                <label for="image" class="relative cursor-pointer">
+                                    <span class="text-orange-600">Перенесите</span> или <span
+                                        class="text-orange-600">выберите</span>
+                                    <span>изображение на загрузку</span>
+                                </label>
+                                <input  id="image" name="image" type="file"
+                                    class="absolute inset-0 w-full h-full opacity-0 z-50" />
+                                {% if form.image.errors %}
+                                <div class="text-red-500 text-sm mt-1">{{ form.image.errors.as_text }}</div>
+                                {% endif %}
+                            </div>
+                        </div><br>
+
+                        <div>
+                            <label for='title' class="text-gray-600">Название</label>
+                            <input  id="title" name="title"
+                                class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                placeholder="Введите название" type="text" value='{{ game.title }}'>
+                            {% if form.title.errors %}
+                            <div class="text-red-500 text-sm mt-1">{{ form.title.errors.as_text }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <div>
+                                <label for="description" class="text-gray-600">Описание</label>
+                                <textarea id="description" name="description"
+                                    class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                    placeholder='Введите описание'>{{ game.description }}</textarea>
+                                {% if form.description.errors %}
+                                <div class="text-red-500 text-sm mt-1">{{ form.description.errors.as_text }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-gray-600">Дата выхода</label>
+                            <input  id="release_date" name="release_date"
+                                class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                value='{{ game.release_date|date:"Y-m-d" }}' type="date">
+                            {% if form.release_date.errors %}
+                            <div class="text-red-500 text-sm mt-1">{{ form.release_date.errors.as_text }}</div>
+                            {% endif %}
+                        </div>
+                        <div class='flex gap-3'>
+                            <div class="w-2/6">
+                                <label for='price' class="text-gray-600">Цена (₽)</label>
+                                <input  id="price" name="price"
+                                    class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                    value='{{ game.price|floatformat }}' type="number">
+                                {% if form.price.errors %}
+                                <div class="text-red-500 text-sm mt-1">{{ form.price.errors.as_text }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="w-1/6">
+                                <label for='discount' class="text-gray-600">Скидка (%)</label>
+                                <input id="discount" name="discount"
+                                    class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                    value='{{ game.discount|floatformat }}' type="number" min="0" max="100">
+                                {% if form.discount.errors %}
+                                <div class="text-red-500 text-sm mt-1">{{ form.discount.errors.as_text }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if form.non_field_errors %}
+                        <div class="text-red-500 text-sm mt-1">
+                            {{ form.non_field_errors.as_text }}
+                        </div>
+                        {% endif %}
+
+                        <div class="flex justify-end">
+                            <button
+                                class="my-4 mr-2 py-2 px-6 m-1 text-center bg-orange-600 border rounded-md text-white  hover:bg-orange-700"
+                                type="submit">Обновить</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'javascripts/image_uploader.js' %}"></script>
+{% endblock scripts %}

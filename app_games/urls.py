@@ -23,8 +23,10 @@ app_name = 'games'
 
 urlpatterns = [
     path(route='games/', view=views.CatalogView.as_view(), name='catalog'),
-    path(route='game/<str:author>/<slug:game_slug>/', view=views.GameDetailView.as_view(), name='game_detail'),
+    path(route='game/<str:author>/<slug:game_slug>/<int:game_id>/', view=views.GameDetailView.as_view(), name='game_detail'),
     path(route='add_to_wishlist/', view=views.WishListItemCreateView.as_view(), name='wishlist_add'),
     path(route='remove_from_wishlist/', view=views.WishListItemRemoveView.as_view(), name='wishlist_remove'),
-    path(route='post_game/', view=views.PostGameView.as_view(), name='game_post')
+    path(route='post_game/', view=views.PostGameView.as_view(), name='game_post'),
+    path(route='update_game/<slug:game_slug>/<int:game_id>/', view=views.UpdateGameView.as_view(), name='game_update'),
+    path(route='delete_game/<slug:game_slug>/<int:game_id>/', view=views.DeleteGameView.as_view(), name='game_delete'),
 ]

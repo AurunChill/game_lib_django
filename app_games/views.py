@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views import View
@@ -5,8 +6,9 @@ from django.db.models import F, ExpressionWrapper, DecimalField
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db.models import Count
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # Standard
 from enum import Enum
@@ -15,7 +17,7 @@ import json
 # Project
 from app_games.models import GameModel, WishListModel
 from app_games.search import q_search
-from app_games.forms import GameCreateForm
+from app_games.forms import GameCreateForm, GameUpdateForm
 from app_users.models import UserModel
 
 
@@ -150,10 +152,16 @@ class GameDetailView(DetailView):
     slug_url_kwarg = 'game_slug'
     slug_field = 'slug'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(author__username=self.kwargs.get('author'))
-        return queryset 
+    def get_object(self, queryset=None):
+        author = self.kwargs.get('author')
+        game_slug = self.kwargs.get('game_slug')
+        game_id = self.kwargs.get('game_id')
+        
+        if queryset is None:
+            queryset = self.get_queryset()
+        
+        game = get_object_or_404(queryset, author__username=author, slug=game_slug, id=game_id)
+        return game
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -204,16 +212,18 @@ class WishListItemRemoveView(View):
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
         
 
-class PostGameView(LoginRequiredMixin, CreateView):
+class PostGameView(LoginRequiredMixin, CreateView ):
     model = GameModel
     form_class = GameCreateForm
     template_name = 'app_games/post_game.html'
-    success_url = reverse_lazy('main:about')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        author = form.instance.author.username
+        game_slug = form.instance.slug
+        game_id = form.instance.id
+        self.success_url = reverse_lazy('game:details', kwargs={'author': author, 'game_slug': game_slug, 'game_id': game_id})  
         response = super().form_valid(form)
-        self.success_url = reverse_lazy('main:about')  
         return response
 
     def get_context_data(self, **kwargs):
@@ -224,3 +234,61 @@ class PostGameView(LoginRequiredMixin, CreateView):
         else:
             context['form'] = GameCreateForm(instance=self.object)
         return context 
+    
+
+class UpdateGameView(LoginRequiredMixin, UpdateView):
+    model = GameModel
+    form_class = GameUpdateForm
+    template_name = 'app_games/update_game.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        response = super().form_valid(form)
+        author = form.instance.author.username
+        game_slug = form.instance.slug
+        game_id = form.instance.id
+        self.success_url = reverse_lazy('game:details', kwargs={'author': author, 'game_slug': game_slug, 'game_id': game_id})  
+        return response
+
+    def get_object(self):
+        author = self.request.user
+        game_id = self.kwargs.get('game_id')
+        game_slug = self.kwargs.get('game_slug')
+        game = GameModel.objects.filter(author=author).filter(slug=game_slug).filter(id=game_id).first()
+        return game
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Update a Game'
+        if self.request.method == 'POST':
+            context['form'] = GameUpdateForm(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            context['form'] = GameUpdateForm(instance=self.object)
+        game = self.get_object()
+        context['game'] = game
+        return context 
+
+
+class DeleteGameView(LoginRequiredMixin, DeleteView):
+    model = GameModel
+    success_url = reverse_lazy('games:catalog')
+
+    def get_object(self):
+        author = self.request.user
+        game_id = self.kwargs.get('game_id')
+        game_slug = self.kwargs.get('game_slug')
+        game = GameModel.objects.filter(author=author).filter(slug=game_slug).filter(id=game_id).first()
+        return game
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Game'
+        game = self.get_object()
+        context['game'] = game
+        return context
+
+    def delete(self):
+        self.object = self.get_object()
+        self.object.delete()
+        messages.add_message(self.request, messages.INFO, 'Игра успешно удалена!')
+        return self.success_url

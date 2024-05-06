@@ -5,7 +5,7 @@ from django import forms
 from app_games.models import GameModel
 
 
-class GameCreateForm(forms.ModelForm):
+class BaseGameForm(forms.ModelForm):
     image = forms.ImageField(required=True)
     title = forms.CharField(required=True, max_length=150)
     description = forms.CharField(required=False, widget=forms.TextInput())
@@ -15,4 +15,11 @@ class GameCreateForm(forms.ModelForm):
 
     class Meta:
         model = GameModel
-        fields = ['image', 'title', 'description', 'release_date', 'price', 'discount']
+        fields = ['image', 'title', 'description', 'release_date', 'price', 'discount'] 
+
+
+class GameCreateForm(BaseGameForm):
+    pass
+
+class GameUpdateForm(BaseGameForm):
+    pass

@@ -19,7 +19,7 @@ class GameModel(models.Model):
     description = models.TextField(default='Coming Soon', verbose_name='Описание')
     release_date = models.DateField(null=True, blank=True, verbose_name='Дата выхода')
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
-    discount = models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %')
+    discount = models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %') 
 
     def total_price(self) -> float:
         return self.price - (self.price * self.discount / 100)
@@ -31,7 +31,7 @@ class GameModel(models.Model):
         ordering = ('title',)
 
     def get_absolute_url(self):
-        return reverse('games:game_detail', kwargs={'author': self.author.username, 'game_slug': self.slug})
+        return reverse('games:game_detail', kwargs={'author': self.author.username, 'game_slug': self.slug, 'game_id': self.pk})
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)

@@ -1,0 +1,18 @@
+{% extends 'base.html' %} <!-- Assuming you have a base.html, else, adjust accordingly -->
+
+{% block content %}
+<div class="flex justify-center items-center w-full">
+    <div class="max-w-lg w-full mt-28">
+        <div class="border shadow rounded-lg p-3 items-center text-center py-8 px-2">
+            <h2 class="text-xl text-gray-600 pb-2">Подтвердите удаление</h2>
+            <div class="w-full flex justify-between mt-6 px-6">
+                <form action="" method="post" class="h-full">
+                    {% csrf_token %}
+                    <button class="h-full bg-orange-600 text-white py-4 px-6 rounded-lg font-bold hover:bg-orange-700">Удалить</button>
+                </form>
+                <button class="h-full bg-gray-200 text-gray-800 py-4 px-6 rounded-lg font-bold hover:bg-gray-300" onclick="window.history.back()">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

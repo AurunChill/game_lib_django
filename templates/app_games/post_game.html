@@ -14,13 +14,7 @@
 
                             <label class="text-gray-600">Обложка</label>
                             <div class="relative h-64 w-64 my-2 self-center overflow-hidden">
-                                <img id="preview" class="relative object-cover rounded-xl"
-                                {% if not user.image %}
-                                    src="{% static 'images/avatar.svg' %}"
-                                {% else %}
-                                    src=""
-                                {% endif %}
-                                >
+                                <img id="preview" class="relative object-cover rounded-xl" src="">
                             </div>
 
                             <div class="w-[400px] self-center relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
@@ -59,7 +53,7 @@
 
                             <div>
                                 <label class="text-gray-600">Дата выхода</label>
-                                <input required id="release_date" name="release_date" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow" value='' type="datetime-local">
+                                <input required id="release_date" name="release_date" class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow" value='' type="date">
                                 {% if form.release_date.errors %}
                                     <div class="text-red-500 text-sm mt-1">{{ form.release_date.errors.as_text }}</div>
                                 {% endif %}
@@ -72,7 +66,7 @@
                                         value='0' type="number">
                                     {% if form.price.errors %}
                                         <div class="text-red-500 text-sm mt-1">{{ form.price.errors.as_text }}</div>
-                                    {% endif %}
+                                    {% endif %} 
                                 </div>
                                 <div class="w-1/6">
                                     <label for='discount' class="text-gray-600">Скидка (%)</label>
