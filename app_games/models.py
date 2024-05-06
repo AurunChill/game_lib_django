@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 
 # Project
 from app_users.models import UserModel
@@ -14,7 +15,7 @@ class GameModel(models.Model):
     author = models.ForeignKey(to=UserModel, on_delete=models.SET_NULL, null=True, related_name='user', verbose_name='Автор')
     image = models.ImageField(upload_to=image_directory_path, verbose_name='Обложка')
     title = models.CharField(max_length=100, verbose_name='Название')
-    slug = models.SlugField(max_length=200, verbose_name='URL')
+    slug = models.SlugField(max_length=200, verbose_name='URL') 
     description = models.TextField(default='Coming Soon', verbose_name='Описание')
     release_date = models.DateField(null=True, blank=True, verbose_name='Дата выхода')
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
@@ -31,6 +32,10 @@ class GameModel(models.Model):
 
     def get_absolute_url(self):
         return reverse('games:game_detail', kwargs={'author': self.author.username, 'game_slug': self.slug})
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(GameModel, self).save(*args, **kwargs)
 
     def __repr__(self) -> str:
         return f'Game(id:{self.pk}, title:{self.title}, author:{self.author})'

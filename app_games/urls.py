@@ -26,4 +26,5 @@ urlpatterns = [
     path(route='game/<str:author>/<slug:game_slug>/', view=views.GameDetailView.as_view(), name='game_detail'),
     path(route='add_to_wishlist/', view=views.WishListItemCreateView.as_view(), name='wishlist_add'),
     path(route='remove_from_wishlist/', view=views.WishListItemRemoveView.as_view(), name='wishlist_remove'),
+    path(route='post_game/', view=views.PostGameView.as_view(), name='game_post')
 ]

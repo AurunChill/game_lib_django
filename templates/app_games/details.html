@@ -61,14 +61,14 @@
                 </div>
                 <div class='mt-4 flex gap-4'>
                     {% in_user_cart user.id game.pk as in_cart %}
-                    <span class="text_in_cart font-bold text-orange-600">
+                    <span class="text_in_cart font-bold text-gray-800">
                     {% if in_cart %}
                             В корзине
                     {% endif %}
                     </span>
 
                     {% in_user_wishlist user.id game.pk as in_wishlist %}
-                    <span class="text_in_wishlist font-bold text-orange-600">
+                    <span class="text_in_wishlist font-bold text-gray-800">
                     {% if in_wishlist %}
                             В желаемых
                     {% endif %}

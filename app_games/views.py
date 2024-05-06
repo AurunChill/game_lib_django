@@ -1,18 +1,22 @@
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views import View
 from django.db.models import F, ExpressionWrapper, DecimalField
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db.models import Count
-
-# Project
-from app_games.models import GameModel, WishListModel
-from app_games.search import q_search
-from app_users.models import UserModel
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView
 
 # Standard
 from enum import Enum
 import json
+
+# Project
+from app_games.models import GameModel, WishListModel
+from app_games.search import q_search
+from app_games.forms import GameCreateForm
+from app_users.models import UserModel
 
 
 class SearchFilters(Enum):
@@ -198,3 +202,25 @@ class WishListItemRemoveView(View):
                  return JsonResponse({'error': 'game_id or user_id is missing'}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+        
+
+class PostGameView(LoginRequiredMixin, CreateView):
+    model = GameModel
+    form_class = GameCreateForm
+    template_name = 'app_games/post_game.html'
+    success_url = reverse_lazy('main:about')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        response = super().form_valid(form)
+        self.success_url = reverse_lazy('main:about')  
+        return response
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Post a Game'
+        if self.request.method == 'POST':
+            context['form'] = GameCreateForm(self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            context['form'] = GameCreateForm(instance=self.object)
+        return context 

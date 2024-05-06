@@ -12,11 +12,11 @@
                     Админ панель
                 </a></li>
             {% endif %}
-            <li class="mb-2"><a href="#" class="text-gray-700 hover:text-gray-900">Выложить игру</a></li>
+            <li class="mb-2"><a href="{% url 'games:game_post' %}" class="text-gray-700 hover:text-gray-900">Выложить игру</a></li>
             <li class="mb-2"><a href="{% url 'users:logout' %}" class="text-gray-700 hover:text-gray-900">
                 Выйти из аккаунта
             </a></li>
-        </ul>
+        </ul> 
     </div>
     <div class="flex"> 
         <!-- Main content -->
@@ -25,7 +25,7 @@
                 <form class="max-w-2xl" method='POST' enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="flex flex-wrap border shadow rounded-lg p-3">
-                        <h2 class="text-xl text-orange-600 pb-2">Настройка аккаунта:</h2>
+                        <h2 class="text-xl text-orange-600 pb-2">Настройка аккаунта</h2>
                         <div class="flex flex-col gap-2 w-full border-gray-400">
 
                             <label class="text-gray-600">Аватар</label>
@@ -48,7 +48,7 @@
                                     </label>
                                     <input id="image" name="image" type="file" class="absolute inset-0 w-full h-full opacity-0 z-50" />
                                     {% if form.image.errors %}
-                                        <div class="text-red-500 text-sm mt-1">{{ form.old_password.errors.as_text }}</div>
+                                        <div class="text-red-500 text-sm mt-1">{{ form.image.errors.as_text }}</div>
                                      {% endif %}
                                 </div>
                             </div><br>
@@ -59,7 +59,7 @@
                                     class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                     value="{{ user.username }}" type="text">
                                 {% if form.userame.errors %}
-                                    <div class="text-red-500 text-sm mt-1">{{ form.old_password.errors.as_text }}</div>
+                                    <div class="text-red-500 text-sm mt-1">{{ form.username.errors.as_text }}</div>
                                 {% endif %}
                             </div>
             
@@ -69,7 +69,7 @@
                                     class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                     value='{{ user.email }}' type="text">
                                 {% if form.email.errors %}
-                                    <div class="text-red-500 text-sm mt-1">{{ form.old_password.errors.as_text }}</div>
+                                    <div class="text-red-500 text-sm mt-1">{{ form.email.errors.as_text }}</div>
                                 {% endif %}
                             </div>
                             {% if form.non_field_errors %}
