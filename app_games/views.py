@@ -219,11 +219,8 @@ class PostGameView(LoginRequiredMixin, CreateView ):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        author = form.instance.author.username
-        game_slug = form.instance.slug
-        game_id = form.instance.id
-        self.success_url = reverse_lazy('game:details', kwargs={'author': author, 'game_slug': game_slug, 'game_id': game_id})  
         response = super().form_valid(form)
+        self.success_url = reverse_lazy(self.object.get_absolute_url())  
         return response
 
     def get_context_data(self, **kwargs):
@@ -244,10 +241,7 @@ class UpdateGameView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         response = super().form_valid(form)
-        author = form.instance.author.username
-        game_slug = form.instance.slug
-        game_id = form.instance.id
-        self.success_url = reverse_lazy('game:details', kwargs={'author': author, 'game_slug': game_slug, 'game_id': game_id})  
+        self.success_url = reverse_lazy(self.object.get_absolute_url())  
         return response
 
     def get_object(self):

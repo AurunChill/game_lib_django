@@ -10,7 +10,7 @@ class GameModelAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('show_cover', 'title', 'author', 'release_date', 'price', 'discount',)
     list_editable = ['discount',]
-    search_fields = ['title', 'author', 'price', 'discount']
+    search_fields = ['title', 'author__username', 'price', 'discount']
     list_filter = ['discount']
     readonly_fields=['show_cover_big']
     fields = ('author', 'image', 'show_cover_big', 'title', 'slug', 'description', 'release_date', 'price', 'discount',)
