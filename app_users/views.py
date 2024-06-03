@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView
 
+
 # Project
 import app_users.forms as forms
 
@@ -80,3 +81,4 @@ class UserPasswordChangeView(PasswordChangeView):
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
+    

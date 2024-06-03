@@ -19,6 +19,7 @@ from django.urls import path
 # Project
 from app_carts import views
 
+
 app_name = 'carts'
 
 urlpatterns = [

@@ -9,8 +9,18 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+# Django
+from django.urls import reverse_lazy
 
+# Third-party
+from dotenv import load_dotenv
+
+# Standard
 from pathlib import Path
+
+
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +40,7 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+SITE_ID = 1
 INSTALLED_APPS = [
     # Django apps
     'django.contrib.admin',
@@ -39,6 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party apps
+    'social_django',
+
     # Project apps
     'app_games',
     'app_main',
@@ -47,6 +61,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # Django
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +69,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Third-party
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -69,6 +87,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # Third-party
+                'social_django.context_processors.backends',
             ],
         },
     },
@@ -104,6 +125,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 
@@ -152,3 +177,18 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'aurunchill@yandex.ru'
 EMAIL_HOST_PASSWORD = 'wygonehuvgwatxhl'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Auth
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+    'django.contrib.auth.backends.ModelBackend',  # for the default model backend
+)
+
+# Social Auth settings
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '914779541966-0u1gm4eo6vhb17p4v9sc2t2rba61jemc.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+
+# Login
+LOGIN_REDIRECT_URL = reverse_lazy('games:catalog')
+LOGOUT_REDIRECT_URL = reverse_lazy('games:catalog')

@@ -9,6 +9,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "4.2.11"
+python-dotenv = "^1.0.1"
+social-auth-app-django = "^5.4.1"
 
 
 [build-system]

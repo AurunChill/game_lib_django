@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 import django.contrib.auth.views as auth_views
 
 
+
 password_reset_patterns = [
     path(
         route='password_reset/', 
@@ -46,12 +47,17 @@ password_reset_patterns = [
 
 
 urlpatterns = [
-    path('', include('app_main.urls')),
     path('admin/', admin.site.urls),
+
+    path('', include('app_main.urls')),
     path('', include('app_games.urls')),
     path('', include('app_carts.urls')),
-    path('accounts/', include('app_users.urls')), 
+
+    path('accounts/', include('app_users.urls')),
+    path('social-auth/', include('social_django.urls', namespace='social')),
+
     path('', include(password_reset_patterns)),
+
 ]
 
 if settings.DEBUG:
