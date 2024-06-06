@@ -30,8 +30,17 @@ class GameModelAdmin(admin.ModelAdmin):
     
       
 @admin.register(models.WishListModel)
-class CartItemModelAdmin(admin.ModelAdmin):
+class WishListModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'game')
     search_fields = ['user__username', 'game__name']  # Assuming 'username' in User and 'name' in Game
     list_filter = ['user', 'game']
     fields = ('user', 'game')
+
+
+@admin.register(models.CommentModel)
+class CommentModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'game', 'text', 'date', 'votes', 'reply_to')
+    search_fields = ['user__username', 'game__name']
+    list_filter = ['user', 'game']
+    fields = ('user', 'game', 'text', 'date', 'votes', 'reply_to')
+    sortable_by = ['date', 'votes']

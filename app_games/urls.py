@@ -14,12 +14,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# Third-party imports
 from django.urls import path
 
 # Project
 from app_games import views
 
+
 app_name = 'games'
+
+api_patterns = [
+    path(route='api/v1/comments', view=views.CommentView.as_view(), name='comments'),
+]
 
 urlpatterns = [
     path(route='games/', view=views.CatalogView.as_view(), name='catalog'),
@@ -30,3 +36,6 @@ urlpatterns = [
     path(route='update_game/<slug:game_slug>/<int:game_id>/', view=views.UpdateGameView.as_view(), name='game_update'),
     path(route='delete_game/<slug:game_slug>/<int:game_id>/', view=views.DeleteGameView.as_view(), name='game_delete'),
 ]
+
+
+urlpatterns += api_patterns

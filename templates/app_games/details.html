@@ -92,6 +92,41 @@
                 <span class="ml-1 font-bold text-lg cursor-pointer">Вернуться в каталог</span>
             </a>
         </div>
+
+        <form class="max-w-2xl bg-white rounded-lg border p-2 mx-auto mt-20">
+            <div class="px-3 mb-2 mt-2">
+                <textarea placeholder="comment" class="w-full bg-gray-100 rounded border border-gray-400 leading-normal resize-none h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"></textarea>
+            </div>
+            <div class="flex justify-end px-4">
+                <input type="submit" class="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500" value="Comment">
+            </div>
+        </form>
+
+        <div class="flex flex-col space-y-4">
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold">John Doe</h3>
+                <p class="text-gray-700 text-sm mb-2">Posted on April 17, 2023</p>
+                <p class="text-gray-700">This is a sample comment. Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit,
+                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold">Jane Smith</h3>
+                <p class="text-gray-700 text-sm mb-2">Posted on April 16, 2023</p>
+                <p class="text-gray-700">I agree with John. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <h3 class="text-lg font-bold">Bob Johnson</h3>
+                <p class="text-gray-700 text-sm mb-2">Posted on April 15, 2023</p>
+                <p class="text-gray-700">I have a different opinion. Lorem ipsum dolor sit amet, consectetur adipiscing
+                    elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock content %}
@@ -104,7 +139,7 @@
     function goBackOrRedirectToCatalog() {
         const previousUrl = document.referrer;
         const gamesCatalogUrl = '/games/';
-    
+
         // Check if the previous URL contains the games catalog URL
         if (previousUrl.includes(gamesCatalogUrl)) {
             // Go back to the previous page

@@ -1,3 +1,4 @@
+# Third-party
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
@@ -10,14 +11,20 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from rest_framework import generics, mixins
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
+from rest_framework import status
+
 # Standard
 from enum import Enum
 import json
 
 # Project
-from app_games.models import GameModel, WishListModel
+from app_games.models import GameModel, WishListModel, CommentModel
 from app_games.search import q_search
 from app_games.forms import GameCreateForm, GameUpdateForm
+import app_games.serializers as serializers
 from app_users.models import UserModel
 
 
@@ -166,9 +173,11 @@ class GameDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_wishlists_count = len(WishListModel.objects.filter(game=self.object))
+        game_comments = CommentModel.objects.filter(game=self.object)
 
         context['title'] = self.object.title
         context['total_wishlists_count'] = total_wishlists_count
+        context['comments'] = game_comments
         return context
     
 
@@ -286,3 +295,32 @@ class DeleteGameView(LoginRequiredMixin, DeleteView):
         self.object.delete()
         messages.add_message(self.request, messages.INFO, 'Игра успешно удалена!')
         return self.success_url
+    
+
+class CommentView(generics.GenericAPIView,
+                  mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  mixins.DestroyModelMixin):
+    queryset = CommentModel.objects.all()
+    serializer_class = serializers.CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        game = self.kwargs.get('game', None)
+        if game:
+            return self.queryset.filter(game=game)
+        return self.queryset
+    
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        comment_id = kwargs.get('pk')
+        comment = CommentModel.objects.filter(id=comment_id).first()
+        if comment:
+            comment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_404_NOT_FOUND)

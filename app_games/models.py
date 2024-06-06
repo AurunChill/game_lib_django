@@ -59,3 +59,18 @@ class WishListModel(models.Model):
 
     def __str__(self):
         return f'{self.user.username} добавил {self.game.title} в список желаемого'
+    
+
+class CommentModel(models.Model):
+    user = models.ForeignKey(to=UserModel, on_delete=models.CASCADE, related_name='comment_user', verbose_name='Пользователь')
+    game = models.ForeignKey(to=GameModel, on_delete=models.CASCADE, related_name='comment_game', verbose_name='Игра')
+    text = models.TextField(verbose_name='Текст')
+    date = models.DateTimeField(auto_now_add=True)
+    votes = models.IntegerField(default=0)
+    reply_to = models.ForeignKey(to='self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies', verbose_name='Ответ')
+
+    class Meta:
+        db_table = 'comments'
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+

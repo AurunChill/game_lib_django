@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'social_django',
+    'rest_framework',
 
     # Project apps
     'app_games',
@@ -192,3 +193,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 # Login
 LOGIN_REDIRECT_URL = reverse_lazy('games:catalog')
 LOGOUT_REDIRECT_URL = reverse_lazy('games:catalog')
+
+
+# Django Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 30
+}
