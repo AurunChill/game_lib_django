@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    show_alerts()
+});
+
+function show_alerts() {
     const alerts = document.querySelectorAll('.alert-message');
     alerts.forEach(function (alert, index) {
         setTimeout(() => {
@@ -8,4 +12,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 4500 * (index + 1));
         }, 500 * index); // To avoid showing all at the same time
     });
-});
+}

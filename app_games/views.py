@@ -306,9 +306,9 @@ class CommentView(generics.GenericAPIView,
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        game = self.kwargs.get('game', None)
-        if game:
-            return self.queryset.filter(game=game)
+        game_id = self.request.query_params.get('game_id', None)
+        if game_id:
+            return self.queryset.filter(game__id=game_id)
         return self.queryset
     
     def get(self, request, *args, **kwargs):

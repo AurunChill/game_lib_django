@@ -18,9 +18,12 @@
                         <p class="rounded-sm text-white">Игротека GameLib</p>
                     </div>
 
-                    <div class="ml-auto mr-4 mt-4 md:hidden text-gray-600 relative overflow-hidden" id="burgerMenu" onclick="createRipple(event)">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    <div class="ml-auto mr-4 mt-4 md:hidden text-gray-600 relative overflow-hidden" id="burgerMenu"
+                        onclick="createRipple(event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7" />
                         </svg>
                     </div>
 
@@ -36,7 +39,7 @@
                             href="{% url 'main:contacts' %}">Контакты</a>
                         {% endwith %}
                     </div>
-       
+
 
                     <!-- Auth and profile block -->
                     <div class="hidden md:flex items-center justify-evenly font-semibold ml-auto">
@@ -68,25 +71,32 @@
                 </div>
             </nav>
         </header>
-                   
+
         <div class="md:hidden flex justify-end relative z-10">
             <div class="max-w-sm rounded-md z-10 bg-gray-300 absolute right-0 text-gray-800" id="dropdownMenu">
                 {% with request.resolver_match.url_name as url_name %}
-                <a class="{% if url_name == 'home' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'main:home' %}">Домашняя</a>
+                <a class="{% if url_name == 'home' %}nav_choosen{% else %}header_link{% endif %} custom-underline block "
+                    href="{% url 'main:home' %}">Домашняя</a>
                 <hr class="mx-2 border-gray-400">
-                <a class="{% if url_name == 'about' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'main:about' %}">О нас</a>
+                <a class="{% if url_name == 'about' %}nav_choosen{% else %}header_link{% endif %} custom-underline block "
+                    href="{% url 'main:about' %}">О нас</a>
                 <hr class="mx-2 border-gray-400">
-                <a class="{% if url_name == 'catalog' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'games:catalog' %}">Игры</a>
+                <a class="{% if url_name == 'catalog' %}nav_choosen{% else %}header_link{% endif %} custom-underline block "
+                    href="{% url 'games:catalog' %}">Игры</a>
                 <hr class="mx-2 border-gray-400">
-                <a class="{% if url_name == 'contacts' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'main:contacts' %}">Контакты</a>
+                <a class="{% if url_name == 'contacts' %}nav_choosen{% else %}header_link{% endif %} custom-underline block "
+                    href="{% url 'main:contacts' %}">Контакты</a>
                 {% if not user.username %}
-                    <hr class="mx-2 border-gray-400">
-                    <a class="{% if url_name == 'login' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'users:login' %}">Войти</a>
-                    <hr class="mx-2 border-gray-400">
-                    <a class="{% if url_name == 'registration' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{% url 'users:registration' %}">Регистрация</a>
+                <hr class="mx-2 border-gray-400">
+                <a class="{% if url_name == 'login' %}nav_choosen{% else %}header_link{% endif %} custom-underline block "
+                    href="{% url 'users:login' %}">Войти</a>
+                <hr class="mx-2 border-gray-400">
+                <a class="{% if url_name == 'registration' %}nav_choosen{% else %}header_link{% endif %} custom-underline block "
+                    href="{% url 'users:registration' %}">Регистрация</a>
                 {% else %}
-                    <hr class="mx-2 border-gray-400">
-                    <a class="{% if url_name == 'profile' %}nav_choosen{% else %}header_link{% endif %} custom-underline block " href="{{ user.get_absolute_url }}">Профиль</a>
+                <hr class="mx-2 border-gray-400">
+                <a class="{% if url_name == 'profile' %}nav_choosen{% else %}header_link{% endif %} custom-underline block "
+                    href="{{ user.get_absolute_url }}">Профиль</a>
                 {% endif %}
                 {% endwith %}
             </div>
@@ -108,42 +118,8 @@
         </footer>
     </div>
 
-    <script>
-        // Toggle dropdown menu on burger menu click
-        const burgerMenu = document.getElementById('burgerMenu');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        dropdownMenu.classList.add('hidden');
-
-        burgerMenu.addEventListener('click', () => {
-        dropdownMenu.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', (event) => {
-            const isOutsideDropdown = !dropdownMenu.contains(event.target);
-            const isNotBurgerMenu = event.target !== burgerMenu;
-            const doesNotHaveRippleClass = !event.target.classList.contains('ripple');
-            const isNotSVG = event.target.tagName.toLowerCase() !== 'svg';
-        
-            console.log(event.target)
-            if (isOutsideDropdown && isNotBurgerMenu && doesNotHaveRippleClass && isNotSVG) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-
-        function createRipple(event) {
-           const button = event.currentTarget;
-           const circle = document.createElement("span");
-           const diameter = Math.max(button.clientWidth, button.clientHeight);
-           const radius = diameter / 2;
-           circle.style.width = circle.style.height = `${diameter}px`;
-           circle.style.left = `${event.clientX - (button.offsetLeft + radius)}px`;
-           circle.style.top = `${event.clientY - (button.offsetTop + radius)}px`;
-           circle.classList.add('ripple');
-           button.appendChild(circle);
-           setTimeout(() => circle.remove(), 600); // Adjust to match the animation duration!
-       }
-    </script>
+    <script src="{% static 'javascripts/jquery_3_7_1_min.js' %}"></script>
+    <script src="{% static 'javascripts/base_page.js' %}"></script>
     {% block scripts %}
 
     {% endblock scripts %}
