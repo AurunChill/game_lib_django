@@ -94,14 +94,27 @@
             </a>
         </div>
 
-        <form id='send_comment_form' 
-            data-game_id="{{ game.id }}" data-user_id="{{ user.id }}"
-            data-user_image_url="{% if user.image %}{{ user.image.url }}{% else %}null{% endif %}" data-user_name="{{ user.username }}" 
-            class="bg-white rounded-lg border p-2 mt-8">
+        <form id='send_comment_form' data-game_id="{{ game.id }}" data-user_id="{{ user.id }}"
+            data-user_image_url="{% if user.image %}{{ user.image.url }}{% else %}null{% endif %}"
+            data-user_name="{{ user.username }}" class="bg-white rounded-lg border p-2 mt-8">
             {% csrf_token %}
             <div class="px-3 mb-2 mt-2">
                 <textarea placeholder="Пишите комментарий тут"
                     class="w-full bg-white rounded border border-gray-400 leading-normal resize-none h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none"></textarea>
+            </div>
+            <div class="flex px-3 mb-2 mt-2">
+                <div class="h-6 w-6 cursor-pointer">
+                    <svg viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z"
+                                fill="#4b5563"></path>
+                        </g>
+                    </svg>
+                </div>
+                <p class="text-gray-600 text-sm">Напишите ответ на комментарий пользователя Абобуса</p>
             </div>
             <div class="flex justify-end px-4">
                 <input type="submit" class="px-2.5 py-1.5 rounded-md text-white text-sm bg-orange-600"
@@ -110,17 +123,12 @@
         </form>
 
         <div id='comments_container' class="flex flex-col space-y-4">
-            
+
             <div class="bg-white p-4 rounded-lg shadow-md">
                 <div class="flex items-center gap-3">
                     <div class="relative h-12 w-12 my-2 self-center overflow-hidden">
-                        <img id="preview" class="relative object-cover rounded-md"
-                        {% if not user.image %}
-                            src="{% static 'images/avatar.svg' %}"
-                        {% else %}
-                            src="{{ user.image.url }}"
-                        {% endif %}
-                        >
+                        <img id="preview" class="relative object-cover rounded-md" {% if not user.image %}
+                            src="{% static 'images/avatar.svg' %}" {% else %} src="{{ user.image.url }}" {% endif %}>
                     </div>
                     <h3 class="text-lg font-bold">Bob Johnson</h3>
                 </div>
@@ -128,18 +136,28 @@
                 <p class="text-gray-700">I have a different opinion. Lorem ipsum dolor sit amet, consectetur adipiscing
                     elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
+                <button class='flex items-center mt-4 cursor-pointer'>
+                    <p class="text-gray-600 text-sm">Ответить</p>
+                    <div class='h-4 w-4 mt-1 ms-1 cursor-pointer'>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M19.5 6.25C19.9142 6.25 20.25 6.58579 20.25 7C20.25 9.24444 19.298 10.7196 18.0632 11.6087C16.8667 12.4702 15.4534 12.75 14.5 12.75L6.31066 12.75L10.0303 16.4697C10.3232 16.7626 10.3232 17.2374 10.0303 17.5303C9.73744 17.8232 9.26256 17.8232 8.96967 17.5303L3.96967 12.5303C3.67678 12.2374 3.67678 11.7626 3.96967 11.4697L8.96967 6.46967C9.26256 6.17678 9.73744 6.17678 10.0303 6.46967C10.3232 6.76256 10.3232 7.23744 10.0303 7.53033L6.31066 11.25L14.5 11.25C15.2133 11.25 16.3 11.0298 17.1868 10.3913C18.0353 9.7804 18.75 8.75556 18.75 7C18.75 6.58579 19.0858 6.25 19.5 6.25Z"
+                                    fill="#4b5563">
+                                </path>
+                            </g>
+                        </svg>
+                    </div>
+                </button>
             </div>
 
             <div class="bg-white p-4 rounded-lg shadow-md">
                 <div class="flex items-center gap-3">
                     <div class="relative h-12 w-12 my-2 self-center overflow-hidden">
-                        <img id="preview" class="relative object-cover rounded-md"
-                        {% if not user.image %}
-                            src="{% static 'images/avatar.svg' %}"
-                        {% else %}
-                            src="{{ user.image.url }}"
-                        {% endif %}
-                        >
+                        <img id="preview" class="relative object-cover rounded-md" {% if not user.image %}
+                            src="{% static 'images/avatar.svg' %}" {% else %} src="{{ user.image.url }}" {% endif %}>
                     </div>
                     <h3 class="text-lg font-bold">Bob Johnson</h3>
                 </div>
@@ -149,7 +167,8 @@
                         <h3 class="text-md font-bold">Bob Johnson</h3>
                     </div>
                     <p class="text-gray-700 text-[10px] mb-2">2023.05.12</p>
-                    <p class="text-gray-700 text-xs">I have a different opinion. Lorem ipsum dolor sit amet, consectetur adipiscing
+                    <p class="text-gray-700 text-xs">I have a different opinion. Lorem ipsum dolor sit amet, consectetur
+                        adipiscing
                         elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     </p>
                 </div>
