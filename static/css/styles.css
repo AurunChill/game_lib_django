@@ -804,6 +804,10 @@ video {
   margin-right: 1rem;
 }
 
+.ms-1 {
+  margin-inline-start: 0.25rem;
+}
+
 .mt-1 {
   margin-top: 0.25rem;
 }
@@ -834,10 +838,6 @@ video {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.ms-1 {
-  margin-inline-start: 0.25rem;
 }
 
 .block {

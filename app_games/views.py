@@ -308,7 +308,7 @@ class CommentView(generics.GenericAPIView,
     def get_queryset(self):
         game_id = self.request.query_params.get('game_id', None)
         if game_id:
-            return self.queryset.filter(game__id=game_id)
+            return self.queryset.filter(game__id=game_id).order_by('-date')
         return self.queryset
     
     def get(self, request, *args, **kwargs):

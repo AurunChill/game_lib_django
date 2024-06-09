@@ -1,6 +1,9 @@
 const api_url = 'http://127.0.0.1:8000/api/v1/comments/';
 
-let page_comments = null
+let page_comments = []
+let replying_to = null
+let comment_page = 1
+
 
 function getCookie(name) {
     let cookieValue = null;
@@ -21,44 +24,55 @@ function getCookie(name) {
 function formatDateString(dateString) {
     // Parse the input date string to a Date object
     const date = new Date(dateString);
-    
+
     // Function to pad single-digit numbers with a leading zero
     const pad = (num) => num.toString().padStart(2, '0');
-    
+
     // Extract date and time components
     const year = date.getFullYear();
     const month = pad(date.getMonth() + 1); // getMonth() is zero-based, hence the +1
     const day = pad(date.getDate());
     const hours = pad(date.getHours());
     const minutes = pad(date.getMinutes());
-    
+
     // Construct the desired output
     return `${year}-${month}-${day} ${hours}:${minutes}`;
-  }
+}
 
 
-$(document).ready(function() {
+function get_comment_by_id(id) {
+    for (let comment of page_comments) {
+        if (comment['id'] === id) {
+            return comment;
+        }
+    }
+    return null;
+}
+
+
+$(document).ready(function () {
     let url = window.location.href;
     let urlSegments = url.split('/');
-    let nonEmptySegments = urlSegments.filter(function(segment) {
+    let nonEmptySegments = urlSegments.filter(function (segment) {
         return segment.trim() !== '';
     });
     let game_id = parseInt(nonEmptySegments[nonEmptySegments.length - 1]);
 
     $.ajax({
-        url: api_url + `?page=1&game_id=${game_id}`,
+        url: api_url + `?page=${comment_page}&game_id=${game_id}`,
         method: 'GET',
-        success: function(response) {
-            console.log(response)
-            page_comments = response.results
-            response.results.forEach((comment) => {
+        success: function (response) {
+            page_comments = response.results;
+            response.results.forEach((comment, i) => {
+                console.log(comment.id, comment.reply_to)
                 generate_comment(
-                    comment.user.image, comment.user.username,
-                    comment.text, formatDateString(comment.date)
+                    i, comment.user.image, comment.user.username,
+                    comment.text, formatDateString(comment.date),
+                    get_comment_by_id(comment.reply_to)
                 );
-            })
+            });
         },
-        error: function(error) {
+        error: function (error) {
             // if (error.status == 403) {
             //     window.location.href = '/accounts/login/';
             // }
@@ -67,7 +81,40 @@ $(document).ready(function() {
 });
 
 
-$('#send_comment_form').on('submit', function(e) {
+function load_comments() {
+    let url = window.location.href;
+    let urlSegments = url.split('/');
+    let nonEmptySegments = urlSegments.filter(function (segment) {
+        return segment.trim() !== '';
+    });
+    let game_id = parseInt(nonEmptySegments[nonEmptySegments.length - 1]);
+    comment_page++;
+    console.log(comment_page)
+
+    $.ajax({
+        url: api_url + `?page=${comment_page}&game_id=${game_id}`,
+        method: 'GET',
+        success: function (response) {
+            page_comments.push(...response.results);
+            response.results.forEach((comment, i) => {
+                generate_comment(
+                    i, comment.user.image, comment.user.username,
+                    comment.text, formatDateString(comment.date),
+                    get_comment_by_id(comment.reply_to)
+                );
+            });
+        },
+        error: function (error) {
+            console.log('here')
+            if (error.status == 404) {
+                comment_page--;
+            }
+        }
+    });
+}
+
+
+$('#send_comment_form').on('submit', function (e) {
     e.preventDefault();
 
     const game_id = $(this).data('game_id');
@@ -85,16 +132,23 @@ $('#send_comment_form').on('submit', function(e) {
         data: {
             'user_id': user_id,
             'game_id': game_id,
-            'text': text
+            'text': text,
+            'reply_to': replying_to === null ? null : page_comments[replying_to]['id']
         },
         headers: {
             'X-CSRFToken': csrftoken
         },
-        success: function(response) {
-            console.log(response)
-            generate_comment(user_image_url, user_name, text, response.date);
+        success: function (response) {
+            page_comments.push(response)
+
+            generate_comment(
+                page_comments.length - 1, user_image_url,
+                user_name, text, response.date,
+                get_comment_by_id(response.reply_to),
+                false
+            );
         },
-        error: function(error) {
+        error: function (error) {
             if (error.status == 403) {
                 window.location.href = '/accounts/login/';
             }
@@ -102,8 +156,8 @@ $('#send_comment_form').on('submit', function(e) {
     });
 });
 
-function generate_comment(image_url, user_name, text, date) {
-    let image = null
+
+function generate_image(image_url) {
     if (image_url === null) {
         image = `
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -118,10 +172,32 @@ function generate_comment(image_url, user_name, text, date) {
         src="${image_url}"
         >`;
     }
+    return image
+}
+
+
+function generate_comment(index, image_url, user_name, text, date, inner_msg, is_appending = true) {
+    let image = generate_image(image_url)
     const formatted_date = formatDateString(date);
 
+    let reply_message = null
+    if (inner_msg !== null) {
+        reply_message = `
+        <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+            <div class="flex items-center gap-3">
+                <div class="relative h-8 w-8 my-2 self-center overflow-hidden">
+                    ${generate_image(inner_msg.user.image)}
+                </div>
+                <h3 class="text-md font-bold">${inner_msg.user.username}</h3>
+            </div>
+            <p class="text-gray-700 text-[10px] mb-2">${formatDateString(inner_msg.date)}</p>
+            <p class="text-gray-700 text-xs">${inner_msg.text.length > 100 ? inner_msg.text.slice(0, 100) + '...' : inner_msg.text}</p>
+        </div>
+            `
+    }
+
     const template = `
-<div class="bg-white p-4 rounded-lg shadow-md">
+<div id="${index}" class="bg-white p-4 rounded-lg shadow-md mt-4">
     <div class="flex items-center gap-3">
         <div class="relative h-12 w-12 my-2 self-center overflow-hidden">
             ${image}
@@ -129,8 +205,9 @@ function generate_comment(image_url, user_name, text, date) {
         <h3 class="text-lg font-bold">${user_name}</h3>
     </div>
     <p class="text-gray-700 text-sm mb-2">${formatted_date}</p>
+    ${reply_message ? reply_message : ''}
     <p class="text-gray-700">${text}</p>
-    <button class='flex items-center mt-4 cursor-pointer' onclick="${'aboba'}">
+    <button class='flex items-center mt-4 cursor-pointer' onclick="reply_to_comment(${index})">
             <p class="text-gray-600 text-sm">Ответить</p>
             <div class='h-4 w-4 mt-1 ms-1 cursor-pointer'>
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,10 +225,38 @@ function generate_comment(image_url, user_name, text, date) {
 </div>
     `
 
-    $('#comments_container').prepend(template);
+    if (replying_to !== null) {
+        cancell_replying();
+    }
+
+    if (is_appending) {
+        $('#comments_container').append(template);
+    } else {
+        $('#comments_container').prepend(template);
+    }
 }
 
 
-function reply_to_comment() {
-    // generate_comment(user_image_url, user_name, text, date);
+function reply_to_comment(id) {
+    replying_to = id;
+    $('#cancell_replying').removeClass('hidden');
+    $('#cancell_replying').addClass('flex');
+
+    console.log(id)
+    console.log(page_comments.length)
+    let comment = page_comments[id];
+    console.log(comment)
+    $('#reply_text').text(`Ответить на комментарий пользователя ${comment.user.username}`);
+
+    let comment_form_offset = $('#send_comment_form').offset().top;
+    $('html, body').animate({
+        scrollTop: comment_form_offset
+    }, 1000);
+}
+
+
+function cancell_replying() {
+    $('#cancell_replying').removeClass('flex');
+    $('#cancell_replying').addClass('hidden');
+    replying_to = null;
 }
