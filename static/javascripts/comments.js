@@ -64,7 +64,6 @@ $(document).ready(function () {
         success: function (response) {
             page_comments = response.results;
             response.results.forEach((comment, i) => {
-                console.log(comment.id, comment.reply_to)
                 generate_comment(
                     i, comment.user.image, comment.user.username,
                     comment.text, formatDateString(comment.date),
@@ -73,9 +72,6 @@ $(document).ready(function () {
             });
         },
         error: function (error) {
-            // if (error.status == 403) {
-            //     window.location.href = '/accounts/login/';
-            // }
         }
     });
 });
@@ -89,7 +85,6 @@ function load_comments() {
     });
     let game_id = parseInt(nonEmptySegments[nonEmptySegments.length - 1]);
     comment_page++;
-    console.log(comment_page)
 
     $.ajax({
         url: api_url + `?page=${comment_page}&game_id=${game_id}`,
@@ -105,7 +100,6 @@ function load_comments() {
             });
         },
         error: function (error) {
-            console.log('here')
             if (error.status == 404) {
                 comment_page--;
             }
@@ -176,9 +170,32 @@ function generate_image(image_url) {
 }
 
 
-function generate_comment(index, image_url, user_name, text, date, inner_msg, is_appending = true) {
+function generate_comment(
+    index, image_url, user_name, 
+    text, date, inner_msg, is_appending = true) {
     let image = generate_image(image_url)
     const formatted_date = formatDateString(date);
+
+    let delete_message = `
+        <div class='h-6 w-6 cursor-pointer' onclick='delete_comment(${index})'>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                    <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                    <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                    <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#000000"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </svg>
+        </div>
+    `
 
     let reply_message = null
     if (inner_msg !== null) {
@@ -203,6 +220,7 @@ function generate_comment(index, image_url, user_name, text, date, inner_msg, is
             ${image}
         </div>
         <h3 class="text-lg font-bold">${user_name}</h3>
+        ${is_staff ? delete_message : ''}
     </div>
     <p class="text-gray-700 text-sm mb-2">${formatted_date}</p>
     ${reply_message ? reply_message : ''}
@@ -242,10 +260,7 @@ function reply_to_comment(id) {
     $('#cancell_replying').removeClass('hidden');
     $('#cancell_replying').addClass('flex');
 
-    console.log(id)
-    console.log(page_comments.length)
     let comment = page_comments[id];
-    console.log(comment)
     $('#reply_text').text(`Ответить на комментарий пользователя ${comment.user.username}`);
 
     let comment_form_offset = $('#send_comment_form').offset().top;
@@ -259,4 +274,31 @@ function cancell_replying() {
     $('#cancell_replying').removeClass('flex');
     $('#cancell_replying').addClass('hidden');
     replying_to = null;
+}
+
+
+
+// Function to send DELETE request
+function delete_comment(index) {
+    let comment = page_comments[index];
+    // URL assumes an endpoint like /comments//, adjust according to your routing
+
+    fetch(api_url + `${comment['id']}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'), // Assuming you're using CSRF tokens with Django
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Deletion successful');
+            $(`#${index}`).remove(); // Using jQuery to remove the element from the DOM
+        } else {
+            console.error('Deletion failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }

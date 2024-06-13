@@ -123,12 +123,12 @@
         </form>
 
         <div id='comments_container' class="flex flex-col space-y-4">
-           
+
         </div>
 
         <div class="flex justify-center px-4 mt-4">
-            <button class="px-6 py-1.5 rounded-md text-white text-sm bg-orange-600"
-            onclick="load_comments()">Загрузить комментарии</button>
+            <button class="px-6 py-1.5 rounded-md text-white text-sm bg-orange-600" onclick="load_comments()">Загрузить
+                комментарии</button>
         </div>
     </div>
 </div>
@@ -153,5 +153,8 @@
             window.location.href = '/games/';
         }
     }
+</script>
+<script>
+    let is_staff = {{ user.is_staff|yesno:'true, false' }};
 </script>
 {% endblock scripts %}

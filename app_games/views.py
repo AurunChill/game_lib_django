@@ -318,8 +318,8 @@ class CommentView(generics.GenericAPIView,
         return self.create(request, *args, **kwargs)
     
     def delete(self, request, *args, **kwargs):
-        comment_id = kwargs.get('pk')
-        comment = CommentModel.objects.filter(id=comment_id).first()
+        comment = self.get_object()
+        print(comment)
         if comment:
             comment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)

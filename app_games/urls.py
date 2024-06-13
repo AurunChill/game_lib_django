@@ -24,7 +24,8 @@ from app_games import views
 app_name = 'games'
 
 api_patterns = [
-    path(route='api/v1/comments/', view=views.CommentView.as_view(), name='comments'),
+    path('api/v1/comments/', views.CommentView.as_view(), name='comments'),
+    path('api/v1/comments/<int:pk>/', views.CommentView.as_view(), name='comment-detail'),
 ]
 
 urlpatterns = [
