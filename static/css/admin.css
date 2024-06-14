@@ -1,0 +1,29 @@
+#header, .module caption {
+    background-color: rgb(249, 130, 45);
+    color: white;
+}
+
+#site-name a {
+    color: white !important;
+    font-weight: 400;
+}
+
+div.breadcrumbs {
+    background-color: rgb(244, 158, 97);
+}
+
+div#changelist-filter > h2 { 
+    background-color: rgb(249, 130, 45);
+}
+
+input[type="submit"] {
+    background-color: rgb(244, 158, 97);
+}
+
+input[type="submit"].default { 
+    background-color: rgb(249, 130, 45);
+}
+
+.paginator > input[type="submit"] {
+    background-color: rgb(249, 130, 45);
+}
