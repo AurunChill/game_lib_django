@@ -17,7 +17,6 @@ class UserModel(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('users:profile', kwargs={"username": self.username})
-    
 
     def __repr__(self) -> str:
         return f'User(id:{self.pk}, username:{self.username})'

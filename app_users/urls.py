@@ -22,7 +22,6 @@ from app_users import views
 
 app_name = 'users'
 
-
 urlpatterns = [
     path(route='login/', view=views.LoginView.as_view(), name='login'),
     path(route='registration/', view=views.RegistrationView.as_view(), name='registration'),

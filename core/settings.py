@@ -16,6 +16,7 @@ from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
 # Standard
+import os
 from pathlib import Path
 
 
@@ -30,17 +31,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@t7tbw7-193s89gt7ev412t#a2x_fe2x(g-2wfp6qyuyv!cd62'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
-
 SITE_ID = 1
+
 INSTALLED_APPS = [
     # Django apps
     'django.contrib.admin',
@@ -101,13 +101,32 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+DB_ENGINE = os.getenv('DB_ENGINE')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+CURRENT_DB = os.getenv('CURRENT_DB', default='sqlite')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if CURRENT_DB == 'postgres':
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -195,7 +214,7 @@ LOGIN_REDIRECT_URL = reverse_lazy('games:catalog')
 LOGOUT_REDIRECT_URL = reverse_lazy('games:catalog')
 
 
-# Django Rest Framework
+# Django Rest Framework Pagination
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10

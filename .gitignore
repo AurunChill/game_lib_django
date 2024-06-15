@@ -4,6 +4,9 @@ venv/
 .pylintrc
 __pycache__/
 
+# environtment
+.env
+
 #ide stuff
 .vscode
 .idea

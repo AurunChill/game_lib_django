@@ -1,15 +1,16 @@
 # Third-party
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView
-from django.views import View
-from django.db.models import F, ExpressionWrapper, DecimalField
+from django.db.models import F, ExpressionWrapper, DecimalField, Count
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-from django.db.models import Count
+
+from django.views import View
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -44,17 +45,11 @@ class OrderFilters(Enum):
 
 
 class CatalogView(ListView):
-    """
-    Display a catalog of games with optional filters and search.
-    """
     model = GameModel
     template_name = 'app_games/catalog.html'
     context_object_name = 'game_list'
 
     def get_queryset(self):
-        """
-        Retrieve the queryset based on search and filter criteria.
-        """
         queryset = super().get_queryset()
         queryset = self.apply_search(queryset)
         queryset = self.apply_filters(queryset)
@@ -62,16 +57,10 @@ class CatalogView(ListView):
         return self.paginate_queryset(queryset)
 
     def apply_search(self, queryset):
-        """
-        Apply search query to the queryset if search parameter is provided.
-        """
         query = self.request.GET.get('search')
         return q_search(query) if query else queryset
     
     def apply_order(self, queryset):
-        """
-        Apply order query to the queryset if order parameter is provided.
-        """
         order_filter = self.request.GET.get('order', OrderFilters.NEW.value).lower()
         match order_filter:
             case OrderFilters.NEW.value:
@@ -85,9 +74,6 @@ class CatalogView(ListView):
 
 
     def apply_filters(self, queryset):
-        """
-        Apply filter based on the pricing_type parameter to the queryset.
-        """
         search_filter = self.request.GET.get('pricing_type', SearchFilters.ALL.value).lower()
         match search_filter:
             case SearchFilters.DISCOUNT.value:
@@ -104,9 +90,6 @@ class CatalogView(ListView):
                 return queryset
 
     def filter_free_games(self, queryset):
-        """
-        Filter queryset to include only games that are effectively free.
-        """
         return queryset.annotate(
             total_price=ExpressionWrapper(
                 F('price') * (1 - F('discount') / 100),
@@ -115,9 +98,6 @@ class CatalogView(ListView):
         ).filter(total_price=0)
 
     def filter_wishlisted_games(self, queryset):
-        """
-        Filter queryset to include only games that are wishlisted by the current user.
-        """
         user = self.request.user
         if user.is_authenticated:
             wishlist_games = WishListModel.objects.filter(user=user).values_list('game', flat=True)
@@ -125,26 +105,17 @@ class CatalogView(ListView):
         return GameModel.objects.none()
 
     def filter_owned_games(self, queryset):
-        """
-        Filter queryset to include only games owned by the current user.
-        """
         user = self.request.user
         if user.is_authenticated:
             return queryset.filter(author=user)
         return GameModel.objects.none()
 
     def paginate_queryset(self, queryset):
-        """
-        Paginate the queryset.
-        """
         page = self.request.GET.get('page', 1)
         paginator = Paginator(queryset, per_page=6)
         return paginator.get_page(page)
 
     def get_context_data(self, **kwargs):
-        """
-        Get the context for this view.
-        """
         context = super().get_context_data(**kwargs)
         context['title'] = 'Каталог'
         context['current_page'] = int(self.request.GET.get('page', 1))

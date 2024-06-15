@@ -45,7 +45,6 @@ password_reset_patterns = [
         ),
 ]
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
 

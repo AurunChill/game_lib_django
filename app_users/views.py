@@ -1,15 +1,15 @@
-import django.contrib.auth as auth
-from django.urls import reverse
+# Django imports
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+
 from django.views import View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import get_user_model
-from django.contrib import messages
-from django.contrib.auth.views import PasswordChangeView
 
+from django.contrib import messages
+import django.contrib.auth as auth
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeView
 
 # Project
 import app_users.forms as forms
@@ -18,12 +18,11 @@ import app_users.forms as forms
 class LoginView(FormView):
     form_class = forms.UserLoginForm
     template_name = 'app_users/auth_login.html'
-    success_url = reverse_lazy('games:catalog') # You need to define the URL to redirect after login
+    success_url = reverse_lazy('games:catalog')
 
     def form_valid(self, form):
         user = form.get_user()
         messages.add_message(self.request, messages.INFO, 'Вы вошли в аккаунт!')
-
         auth.login(self.request, user)
         return super().form_valid(form) 
 
@@ -36,7 +35,6 @@ class RegistrationView(CreateView):
     def form_valid(self, form):
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, 'Вы успешно зарегестрировались! Теперь войдите в аккаунт')
-
         return super().form_valid(form)
 
 
@@ -47,7 +45,7 @@ class LogoutView(LoginRequiredMixin, View):
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
-    model = get_user_model()
+    model = auth.get_user_model()
     template_name = 'app_users/profile.html'
     context_object_name = 'profile'
     slug_field = "username"
