@@ -7,8 +7,6 @@ services:
       - .:/app
     expose:
       - "8000"
-    depends_on:
-      - nginx
 
   nginx:
     image: nginx:latest
