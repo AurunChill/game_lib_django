@@ -1,4 +1,4 @@
-const api_url = 'http://127.0.0.1:8000/api/v1/comments/';
+const api_url = '/api/v1/comments/';
 
 let page_comments = []
 let replying_to = null
