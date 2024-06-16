@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     # Third-party apps
     'social_django',
     'rest_framework',
+    'whitenoise.runserver_nostatic',
 
     # Project apps
     'app_games',
@@ -75,6 +76,7 @@ MIDDLEWARE = [
 
     # Third-party
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -174,7 +176,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
-    ]
+]
 
 
 # Media files
