@@ -1657,24 +1657,19 @@ video {
   /* Optional: Change text color to white for better visibility */
 }
 
-@keyframes rippleEffect {
-  from {
-    opacity: 1;
-    transform: scale(0);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(4);
-  }
-}
-
 .ripple {
   position: absolute;
   border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
   transform: scale(0);
-  animation: rippleEffect 600ms linear;
-  background-color: rgba(255, 255, 255, 0.7);
+  animation: ripple-animation 600ms linear;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 .placeholder\:text-gray-800::-moz-placeholder {
