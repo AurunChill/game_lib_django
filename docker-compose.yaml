@@ -3,11 +3,12 @@ version: '3.8'
 services:
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 core.wsgi:application
     volumes:
       - .:/app
     expose:
       - "8000"
+    depends_on:
+      - nginx
 
   nginx:
     image: nginx:latest
@@ -15,5 +16,3 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - web

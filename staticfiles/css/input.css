@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    .header_link {
+        @apply p-5 rounded-sm transition-all duration-300 ease-in-out hover:text-orange-600
+    }
+
+    .nav_choosen {
+        @apply text-orange-600 font-bold pointer-events-none text-lg
+    }
+
+    .card {
+        @apply transition-transform duration-300 ease-in-out
+    }
+
+    .card_link {
+        @apply transition-colors duration-300 ease-in-out hover:text-orange-600
+    }
+
+    .custom-underline {
+        @apply relative inline-block p-5 rounded-sm transition-all duration-300 ease-in-out;
+    }
+      
+    .custom-underline::after {
+        content: '';
+        @apply absolute bg-orange-600 h-0.5; /* Customize the height as needed */
+        left: 0;
+        right: 100%;
+        bottom: 0;
+        transition: right 0.3s ease-in-out;
+    }
+      
+    .custom-underline:hover::after {
+        right: 0;
+    }
+      
+    .custom-underline .content:hover {
+        @apply text-orange-600;
+    }
+}
+
+::selection {
+    background-color: rgb(234 88 12 / var(--tw-bg-opacity));
+    color: white; /* Optional: Change text color to white for better visibility */
+}
+
+::-moz-selection {
+    background-color: rgb(234 88 12 / var(--tw-bg-opacity));
+    color: white; /* Optional: Change text color to white for better visibility */
+}
+
+
+@keyframes rippleEffect {
+    from {
+        opacity: 1;
+        transform: scale(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(4);
+    }
+}
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: rippleEffect 600ms linear;
+    background-color: rgba(255, 255, 255, 0.7);
+}

@@ -17,3 +17,6 @@ media/
 
 # Node js stuff
 node_modules
+
+# Staticfiles
+/staticfiles

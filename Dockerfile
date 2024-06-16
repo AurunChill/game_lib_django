@@ -13,12 +13,12 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 # Add Poetry to PATH 
 ENV PATH="/root/.local/bin:$PATH"
 
-# Copy pyproject.toml and poetry.lock to the container
+# Copy the pyproject.toml and poetry.lock before installing dependencies
 COPY pyproject.toml poetry.lock /app/
 
-# Install project dependencies
-RUN poetry install --no-root
-RUN pip install gunicorn
+# Install dependencies
+RUN poetry export -f requirements.txt --output /app/requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy the rest of the application code
 COPY . /app/
@@ -32,4 +32,4 @@ EXPOSE 8000
 
 # Set entrypoint and command to run the app
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["poetry", "run", "gunicorn", "--bind", "0.0.0.0:8000", "core.wsgi:application"]
+CMD ["python", "-m", "gunicorn", "--bind", "0.0.0.0:8000", "core.wsgi:application"]
