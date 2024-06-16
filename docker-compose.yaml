@@ -3,7 +3,7 @@ version: '3.8'
 services:
   web:
     build: .
-    command: gunicorn --bind 0.0.0.0:8000 gamelib_portfolio.wsgi:application
+    command: gunicorn --bind 0.0.0.0:8000 core.wsgi:application
     volumes:
       - .:/app
     expose:

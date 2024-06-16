@@ -18,6 +18,7 @@ COPY pyproject.toml poetry.lock /app/
 
 # Install project dependencies
 RUN poetry install --no-root
+RUN pip install gunicorn
 
 # Copy the rest of the application code
 COPY . /app/

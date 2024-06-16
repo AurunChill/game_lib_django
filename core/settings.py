@@ -167,6 +167,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = Path(__file__).resolve().parent.parent / 'staticfiles'
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
@@ -205,8 +206,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Social Auth settings
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '914779541966-0u1gm4eo6vhb17p4v9sc2t2rba61jemc.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 
 # Login
